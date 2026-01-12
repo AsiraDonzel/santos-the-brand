@@ -132,7 +132,7 @@ const Layout: React.FC<LayoutProps> = ({
           <nav className="hidden lg:flex items-center justify-center space-x-10">
             <NavLink to="/shop">Shop</NavLink>
             <NavLink to="/gallery">Gallery</NavLink>
-            <NavLink to="/journal">Journal</NavLink>
+            <NavLink to="/events">Events</NavLink>
             <NavLink to="/about">About</NavLink>
           </nav>
 
@@ -248,7 +248,7 @@ const Layout: React.FC<LayoutProps> = ({
                 <MobileNavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</MobileNavLink>
                 <MobileNavLink to="/shop" onClick={() => setIsMobileMenuOpen(false)}>Collections</MobileNavLink>
                 <MobileNavLink to="/gallery" onClick={() => setIsMobileMenuOpen(false)}>Gallery</MobileNavLink>
-                <MobileNavLink to="/journal" onClick={() => setIsMobileMenuOpen(false)}>Journal</MobileNavLink>
+                <MobileNavLink to="/events" onClick={() => setIsMobileMenuOpen(false)}>Events</MobileNavLink>
                 <MobileNavLink to="/about" onClick={() => setIsMobileMenuOpen(false)}>About Us</MobileNavLink>
                 <MobileNavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</MobileNavLink>
                 <MobileNavLink to="/wishlist" onClick={() => setIsMobileMenuOpen(false)}>Wishlist</MobileNavLink>
@@ -298,7 +298,7 @@ const Layout: React.FC<LayoutProps> = ({
             <ul className="space-y-4 text-sm font-light">
               <li><Link to="/about" className="hover:text-primary-600 transition-colors">Our Story</Link></li>
               <li><Link to="/shop" className="hover:text-primary-600 transition-colors">Collections</Link></li>
-              <li><Link to="/journal" className="hover:text-primary-600 transition-colors">The Journal</Link></li>
+              <li><Link to="/events" className="hover:text-primary-600 transition-colors">Events</Link></li>
               <li><Link to="/wishlist" className="hover:text-primary-600 transition-colors">Wishlist</Link></li>
             </ul>
           </div>

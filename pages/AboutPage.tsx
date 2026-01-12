@@ -1,51 +1,70 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, animate } from 'framer-motion';
+import { motion, animate } from 'framer-motion';
 import TextReveal from '../components/TextReveal';
 import PageTransition from '../components/PageTransition';
 import SpotlightEffect from '../components/SpotlightEffect';
 
 const VALUES = [
   {
-    title: "Quality",
-    description: "We source only the finest mulberry silk and Italian wools, ensuring every garment feels as exceptional as it looks.",
-    image: "https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?q=80&w=1972&auto=format&fit=crop"
+    title: "Grace & Grit",
+    description: "SANTOS is built on the belief that grace gives purpose, but grit sustains growth. We honor the balance between humility and hard work.",
+    tagline: "“Grace made me, grit kept me.”"
   },
   {
-    title: "Sustainability",
-    description: "Conscious luxury is our promise. Our production processes minimize waste and prioritize ethical labor.",
-    image: "https://images.unsplash.com/photo-1596704017254-9b121068fb31?q=80&w=2070&auto=format&fit=crop"
+    title: "Purpose-Driven Identity",
+    description: "Every piece tells a story. SANTOS designs with meaning, ensuring that fashion is not just worn, but felt."
   },
   {
-    title: "Craftsmanship",
-    description: "Every seam is finished by hand. Our master tailors bring decades of expertise to the modern silhouette.",
-    image: "https://images.unsplash.com/photo-1605289982774-9a6fef564df8?q=80&w=2064&auto=format&fit=crop"
+    title: "Resilience & Growth",
+    description: "SANTOS celebrates transformation. We stand for those who rise despite imperfections, obstacles, or setbacks."
+  },
+  {
+    title: "Community & Unity",
+    description: "More than a brand, SANTOS is a movement. We create spaces where creatives, athletes, and dreamers feel seen and empowered."
+  },
+  {
+    title: "Cultural Authenticity",
+    description: "Rooted in Nigeria and connected to the world, SANTOS honors culture, heritage, and global expression."
+  },
+  {
+    title: "Inclusivity & Expression",
+    description: "SANTOS is for everyone. Regardless of background or status, we believe fashion should be accessible and expressive."
+  },
+  {
+    title: "Creative Excellence",
+    description: "From concept to execution, SANTOS values originality and innovation. Each collection challenges norms and elevates confidence."
+  },
+  {
+    title: "Impact Beyond Fashion",
+    description: "We measure success by influence. Through charity and showcases, we use fashion as a platform for social impact."
   }
 ];
 
-const AboutPage = () => {
-  const containerRef = useRef(null);
+// Double the array for a seamless infinite loop
+const INFINITE_VALUES = [...VALUES, ...VALUES];
 
+const AboutPage = () => {
   const [position, setPosition] = useState(0);
 
   useEffect(() => {
-    const controls = animate(position, -100, {
-      duration: 20,
+    // We animate to -50% because the list is doubled. 
+    // Once it reaches -50%, it looks exactly like 0%, allowing a seamless loop.
+    const controls = animate(0, -50, {
+      duration: 40, // Adjust for speed
       ease: "linear",
       repeat: Infinity,
       onUpdate: (latest) => setPosition(latest),
     });
-
-    return controls.stop;
+    return () => controls.stop();
   }, []);
 
   return (
     <PageTransition>
-      <div className="bg-white min-h-screen">
+      <div className="bg-white min-h-screen pt-16 lg:pt-0">
         
-        {/* Split Hero with Spotlight */}
-        <div className="flex flex-col lg:flex-row h-screen">
-          {/* Left: Text */}
-          <div className="w-full lg:w-1/2 flex items-center justify-center p-12 lg:p-24 bg-primary-50">
+        {/* --- SECTION 1: HERO SPLIT --- */}
+        <div className="flex flex-col lg:flex-row min-h-screen">
+          <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-12 lg:p-24 bg-stone-50">
             <div className="max-w-xl">
               <motion.span 
                 initial={{ opacity: 0 }}
@@ -58,19 +77,26 @@ const AboutPage = () => {
               <TextReveal className="font-serif text-5xl md:text-7xl text-primary-950 mb-8 leading-tight">
                 The Santos Story
               </TextReveal>
-              <motion.p 
+              <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.8 }}
-                className="text-slate-600 text-lg leading-relaxed font-light"
+                className="space-y-6 text-slate-600 text-lg leading-relaxed font-light"
               >
-                Born from a desire to redefine modern elegance, Santos blends timeless silhouettes with contemporary boldness. 
-                We believe that luxury is not just what you wear, but how you feel when you wear it.
-              </motion.p>
+                <p className="font-medium text-primary-900 italic">
+                  Santos isn’t just a clothing brand, it’s a movement. Built on purpose, resilience, and community, Santos represents the grind, the growth, and the stories behind every win.
+                </p>
+                <p>
+                  The name Santos was coined from the Spanish and Portuguese word meaning “saints” or “the chosen ones.” It reflects the idea that even imperfect people can rise, transform, and walk with purpose.
+                </p>
+                <p>
+                  Founded in 2024, SANTOS was born from a simple truth: opportunities may open doors, but grit keeps you standing. That spirit lives in our tagline, <span className="italic text-primary-600 font-normal">“Grace made me, grit kept me.”</span>
+                </p>
+              </motion.div>
             </div>
           </div>
 
-          <div className="w-full lg:w-1/2 h-[50vh] lg:h-full relative overflow-hidden bg-black">
+          <div className="w-full lg:w-1/2 h-[50vh] lg:h-auto relative overflow-hidden bg-black">
             <SpotlightEffect className="w-full h-full">
               <motion.img 
                 initial={{ scale: 1.2 }}
@@ -78,57 +104,103 @@ const AboutPage = () => {
                 transition={{ duration: 2, ease: "easeOut" }}
                 src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=2073&auto=format&fit=crop" 
                 alt="Fashion Model" 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover opacity-80"
               />
             </SpotlightEffect>
           </div>
         </div>
 
-        <section ref={containerRef} className="py-32 overflow-hidden bg-primary-950 text-white">
-          <div className="max-w-[1440px] mx-auto px-6 mb-16">
-            <TextReveal className="font-serif text-4xl md:text-5xl">
+        {/* --- SECTION 2: THE JOURNEY --- */}
+        <section className="py-24 px-6 md:px-12 bg-white">
+          <div className="max-w-4xl mx-auto border-l border-primary-100 pl-8 md:pl-16 space-y-16">
+            <div className="space-y-4">
+              <h4 className="text-sm uppercase tracking-widest text-primary-400 font-bold">The Collections</h4>
+              <p className="text-2xl md:text-4xl font-serif text-primary-950 leading-snug">
+                Since its launch, SANTOS has released three collections — <span className="text-primary-600">The Sacred Collection</span>, Bold Visionaries, and The New Curriculum.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-slate-600 font-light leading-relaxed">
+              <p>
+                Santos is a brand for everyone. It transcends gender, background, and status, bringing together individuals who believe in self-expression, resilience, and unity. Beyond clothing, Santos has grown a supportive community that empowers creatives, athletes, and dreamers to push forward despite obstacles.
+              </p>
+              <p>
+                In 2025, SANTOS made a powerful cultural impact beyond fashion. In October, we hosted a two-day charity sports event; in November, a runway fashion showcase; and in December, we closed the year with an exclusive Private Cake Fest.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* --- SECTION 3: CORE VALUES (Infinite Repetition Loop) --- */}
+        <section className="py-32 overflow-hidden bg-primary-950 text-white">
+          <div className="max-w-[1440px] mx-auto px-6 mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <TextReveal className="font-serif text-4xl md:text-6xl text-white">
               Our Core Values
             </TextReveal>
+            <p className="text-primary-300 max-w-sm font-light uppercase tracking-widest text-[10px]">
+              Resilience • Identity • Community • Impact
+            </p>
           </div>
           
-          <div className="pl-6 md:pl-24">
-
-            <motion.div style={{ x: `${position}%` }} className="flex gap-12 w-max">
-              {VALUES.map((value, idx) => (
-                <div
-                  key={idx}
-                  className="w-[85vw] md:w-[600px] flex flex-col md:flex-row gap-8 items-start"
+          <div className="relative">
+            <motion.div 
+              style={{ x: `${position}%` }} 
+              className="flex gap-8 w-max px-6"
+            >
+              {INFINITE_VALUES.map((value, idx) => (
+                <div 
+                  key={idx} 
+                  className="w-[300px] md:w-[400px] bg-white/5 backdrop-blur-sm border border-white/10 p-8 flex flex-col justify-between"
                 >
-                  <div className="w-full md:w-1/2 aspect-[4/5] overflow-hidden">
-                    <img
-                      src={value.image}
-                      alt={value.title}
-                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-1000 ease-luxury"
-                    />
-                  </div>
-                  <div className="w-full md:w-1/2 pt-8">
-                    <h3 className="font-serif text-3xl mb-4 text-primary-200">
-                      {value.title}
-                    </h3>
-                    <p className="text-white/70 leading-relaxed font-light">
+                  <div>
+                    <span className="text-primary-500 font-mono text-sm mb-4 block">0{ (idx % 8) + 1 }</span>
+                    <h3 className="font-serif text-2xl mb-4 text-primary-100">{value.title}</h3>
+                    <p className="text-white/60 leading-relaxed font-light text-sm">
                       {value.description}
                     </p>
-                    <div className="w-12 h-[1px] bg-primary-500 mt-8" />
                   </div>
+                  {value.tagline && (
+                    <p className="mt-8 text-primary-400 italic text-sm border-t border-white/10 pt-4">
+                      {value.tagline}
+                    </p>
+                  )}
                 </div>
               ))}
             </motion.div>
           </div>
         </section>
 
-        <section className="py-32 px-6 flex items-center justify-center bg-white text-center">
+        {/* --- SECTION 4: THE TEAM --- */}
+        <section className="py-32 px-6 bg-stone-50">
+          <div className="max-w-5xl mx-auto">
+             <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-start">
+                <div className="lg:col-span-2">
+                   <h2 className="font-serif text-4xl text-primary-950 mb-4">The Visionary</h2>
+                   <p className="text-primary-500 uppercase tracking-widest text-xs font-bold">Anekwe Paschal</p>
+                </div>
+                <div className="lg:col-span-3 text-lg text-slate-700 leading-relaxed font-light space-y-8">
+                  <p>
+                    A stylist and fashion designer from Nigeria, Paschal built SANTOS to blend grace, grit, and culture—proving fashion can be meaningful, inclusive, and impactful.
+                  </p>
+                  <div>
+                    <p className="text-xs uppercase tracking-widest font-bold text-slate-400 mb-4 border-b border-slate-200 pb-2">The Core Team</p>
+                    <p className="text-slate-500 text-base">
+                      Ndubuisi Henry, Ndubuisi Ikenna, Ene Reginald, and Eze Henry.
+                    </p>
+                  </div>
+                </div>
+             </div>
+          </div>
+        </section>
+
+        {/* --- FOOTER QUOTE --- */}
+        <section className="py-32 px-6 flex items-center justify-center bg-white text-center border-t border-gray-100">
           <div className="max-w-3xl">
-            <p className="font-serif text-3xl md:text-5xl text-primary-950 leading-tight">
+            <p className="font-serif text-3xl md:text-5xl text-primary-950 leading-tight italic opacity-80">
               "We don't just design clothes. We curate moments of confidence."
             </p>
           </div>
         </section>
-
       </div>
     </PageTransition>
   );

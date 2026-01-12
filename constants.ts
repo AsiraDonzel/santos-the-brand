@@ -1,26 +1,9 @@
-import { Product, JournalEntry, Review } from './types';
+import { Product, EventEntry, Review } from './types'; // Updated import
 
 export const CATEGORIES = ["All", "Dresses", "Outerwear", "Tops", "Accessories"];
 
 const generateReviews = (productId: string): Review[] => [
-  // {
-  //   id: `r-${productId}-1`,
-  //   userName: "Isabella V.",
-  //   rating: 5,
-  //   date: "October 12, 2023",
-  //   title: "Absolutely stunning",
-  //   text: "The fabric quality is unmatched. It drapes perfectly and the color is exactly as shown.",
-  //   verified: true
-  // },
-  // {
-  //   id: `r-${productId}-2`,
-  //   userName: "Charlotte M.",
-  //   rating: 4,
-  //   date: "September 28, 2023",
-  //   title: "Beautiful but runs small",
-  //   text: "I adore the design, but I had to size up. The packaging was exquisite.",
-  //   verified: true
-  // }
+  // Reviews can be populated here if needed
 ];
 
 export const PRODUCTS: Product[] = [
@@ -52,9 +35,7 @@ export const PRODUCTS: Product[] = [
     description: 'Italian wool blend trench coat featuring a double-breasted closure and silk lining. A modern take on a classic silhouette.',
     sizes: ['S', 'M', 'L', 'XL'],
     colors: ['Lavender', 'Camel'],
-    colorImages: {
-    
-    },
+    colorImages: {},
     details: {
       fabric: "80% Virgin Wool, 20% Cashmere",
       modelStats: "Height: 5'9\" | Wearing Size M",
@@ -72,9 +53,7 @@ export const PRODUCTS: Product[] = [
     description: 'Structured velvet blazer perfect for evening events. Features gold-plated buttons and a tailored fit.',
     sizes: ['XS', 'S', 'M', 'L'],
     colors: ['Midnight', 'Plum'],
-    colorImages: {
-     
-    },
+    colorImages: {},
     details: {
       fabric: "100% Cotton Velvet",
       modelStats: "Height: 5'11\" | Wearing Size S",
@@ -88,12 +67,10 @@ export const PRODUCTS: Product[] = [
     category: 'Tops',
     image: '',
     hoverImage: '',
-    description: '',
+    description: 'Ultra-soft cashmere sweater with a relaxed fit and ribbed detailing.',
     sizes: ['S', 'M', 'L'],
     colors: ['Violet', 'Cream'],
-    colorImages: {
-  
-    },
+    colorImages: {},
     details: {
       fabric: "100% Mongolian Cashmere",
       modelStats: "Height: 5'8\" | Wearing Size M",
@@ -110,9 +87,7 @@ export const PRODUCTS: Product[] = [
     description: 'Hand-beaded clutch bag with amethyst crystals and a detachable gold chain.',
     sizes: ['One Size'],
     colors: ['Silver', 'Gold'],
-    colorImages: {
-      
-    },
+    colorImages: {},
     details: {
       fabric: "Satin lining, Swarovski Crystals",
       modelStats: "N/A",
@@ -141,29 +116,35 @@ export const PRODUCTS: Product[] = [
   }
 ];
 
-export const JOURNAL_ENTRIES: JournalEntry[] = [
+export const EVENT_ENTRIES: EventEntry[] = [ // Updated type
   {
     id: '1',
-    title: "The Art of Silk",
-    subtitle: "Behind the seams of our Autumn Collection",
-    category: "Craftsmanship",
-    date: "Oct 24, 2025",
-    image: "/public/img2.JPG"
+    title: "Private Cake Fest",
+    subtitle: "An intimate celebration of community, creativity, and connection to close out a landmark year.",
+    category: "Community",
+    date: "Dec 2025",
+    location: "Lagos, Nigeria", // Added location
+    image: "/img2.JPG"
   },
   {
     id: '2',
-    title: "Violet Hour",
-    subtitle: "Why purple is the color of the season",
-    category: "Trend Report",
-    date: "Oct 10, 2025",
-    image: "/public/img3.JPG"
+    title: "Runway Fashion Showcase",
+    subtitle: "A powerful display of creativity and vision, highlighting our growth and the future of African luxury.",
+    category: "Fashion",
+    date: "Nov 2025",
+    location: "Lagos, Nigeria", // Added location
+    image: "/img3.JPG"
   },
   {
     id: '3',
-    title: "Minimalist Luxury",
-    subtitle: "A guide to building a timeless wardrobe",
-    category: "Style Guide",
-    date: "Sep 28, 2025",
-    image: "/public/img4.JPG"
+    title: "Charity Sports Event",
+    subtitle: "A two-day event bringing communities together through sport for a meaningful cause and collective grit.",
+    category: "Impact",
+    date: "Oct 2025",
+    location: "Nigeria", // Added location
+    image: "/img4.JPG"
   }
 ];
+
+// Alias for backwards compatibility 
+export const JOURNAL_ENTRIES = EVENT_ENTRIES;

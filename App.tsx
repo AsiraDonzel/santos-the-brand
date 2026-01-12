@@ -8,7 +8,7 @@ import ProductDetails from './pages/ProductDetails';
 import Checkout from './pages/Checkout';
 import Dashboard from './pages/Dashboard';
 import AuthPage from './pages/AuthPage';
-import JournalPage from './pages/JournalPage';
+import EventsPage from './pages/EventsPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import PoliciesPage from './pages/PoliciesPage';
@@ -71,7 +71,9 @@ function AnimatedRoutes({
             user ? <Dashboard /> : <Navigate to="/auth" replace />
           } />
           
-          <Route path="/journal" element={<JournalPage />} />
+          {/* Changed path and component to Events */}
+          <Route path="/events" element={<EventsPage />} /> 
+          
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/policies" element={<PoliciesPage />} />
@@ -125,9 +127,8 @@ function App() {
 
   const addToRecentlyViewed = (product: Product) => {
     setRecentlyViewed(prev => {
-      // Remove if exists to move to top
       const filtered = prev.filter(p => p.id !== product.id);
-      return [product, ...filtered].slice(0, 5); // Keep max 5
+      return [product, ...filtered].slice(0, 5);
     });
     setShowHistory(true);
   };
@@ -136,7 +137,6 @@ function App() {
     setShowHistory(false);
   };
 
-  // Auth Logic
   const handleLogin = (loggedInUser: User) => {
     setUser(loggedInUser);
   };
@@ -145,7 +145,6 @@ function App() {
     setUser(null);
   };
 
-  // Add to cart logic
   const handleAddToCart = (product: Product, quantity: number = 1, size: string = '', color: string = '') => {
     const finalSize = size || product.sizes[0];
     const finalColor = color || product.colors[0];

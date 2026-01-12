@@ -9,15 +9,17 @@ const TABS = [
 ];
 
 const SHIPPING_FAQS = [
-  { q: "How long does shipping take?", a: "Domestic orders typically arrive within 3-5 business days. International shipping varies by location but generally takes 7-14 days." },
-  { q: "Do you offer expedited shipping?", a: "Yes, we offer Next-Day Air and 2-Day delivery for an additional fee at checkout." },
-  { q: "Where do you ship from?", a: "All Santos pieces are shipped from our atelier in New York City." },
+  { q: "Where do you ship to?", a: "We provide nationwide delivery across all states in Nigeria." },
+  { q: "How long will it take to receive my order?", a: "Lagos deliveries typically take 1–5 days. Orders to other states across Nigeria take between 3–8 days. Please note that all orders are processed and shipped within 1–2 weeks of placement." },
+  { q: "How can I track my package?", a: "Once your order is dispatched, a tracking link will be sent to your registered email or phone number." },
+  { q: "What if there is an issue with my delivery?", a: "If you notice any issues with your package, please reach out to us within 48 hours of receipt so we can handle it immediately." },
 ];
 
 const RETURNS_FAQS = [
-  { q: "What is your return policy?", a: "We accept returns of unworn, unwashed items with original tags attached within 30 days of delivery." },
-  { q: "How do I start a return?", a: "Visit our Returns Portal with your order number and email address to generate a prepaid shipping label." },
-  { q: "Are sale items returnable?", a: "Final Sale items are not eligible for return. This will be clearly marked on the product page." },
+  { q: "What is your return window?", a: "Returns are accepted within 7 days of delivery. Items must be unworn, unwashed, and in their original packaging." },
+  { q: "Which items are not eligible for return?", a: "We do not accept returns on final sale items, event merchandise, or custom orders." },
+  { q: "How will I receive my refund?", a: "Refunds are issued to your original payment method, excluding the delivery fee." },
+  { q: "Can I exchange an item?", a: "Exchanges are subject to availability. If your desired size is out of stock, you will receive store credit or a full refund." },
 ];
 
 interface AccordionItemProps {
@@ -68,10 +70,9 @@ const PoliciesPage = () => {
           
           <div className="text-center mb-16">
             <h1 className="font-serif text-4xl md:text-5xl text-primary-950 mb-4">Policies & Help</h1>
-            <p className="text-slate-500">Everything you need to know about your Santos experience.</p>
+            <p className="text-slate-500">Everything you need to know about your SANTOS experience.</p>
           </div>
 
-          {/* Tabs */}
           <div className="flex justify-center mb-12 border-b border-gray-100">
             {TABS.map((tab) => (
               <button
@@ -93,7 +94,6 @@ const PoliciesPage = () => {
             ))}
           </div>
 
-          {/* Content */}
           <motion.div
             key={activeTab}
             initial={{ opacity: 0, y: 20 }}
@@ -108,10 +108,9 @@ const PoliciesPage = () => {
                     <Truck className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-primary-950 mb-2">Free Global Shipping</h3>
-                    <p className="text-slate-600 font-light text-sm">
-                      We are pleased to offer complimentary shipping on all orders over $500. 
-                      All shipments are insured and require a signature upon delivery to ensure your pieces arrive safely.
+                    <h3 className="font-bold text-primary-950 mb-2">Domestic Logistics</h3>
+                    <p className="text-slate-600 font-light text-sm italic">
+                      "We move fast."
                     </p>
                   </div>
                 </div>
@@ -128,10 +127,9 @@ const PoliciesPage = () => {
                     <RefreshCw className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-primary-950 mb-2">Hassle-Free Returns</h3>
-                    <p className="text-slate-600 font-light text-sm">
-                      We want you to love your purchase. If it's not perfect, you have 30 days to return it.
-                      Restocking fees may apply for international returns.
+                    <h3 className="font-bold text-primary-950 mb-2">Our Promise</h3>
+                    <p className="text-slate-600 font-light text-sm italic">
+                      "If it’s not hitting the way you expected, we’ve got you."
                     </p>
                   </div>
                 </div>
@@ -143,7 +141,6 @@ const PoliciesPage = () => {
               </div>
             )}
           </motion.div>
-
         </div>
       </div>
     </PageTransition>

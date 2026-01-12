@@ -40,13 +40,15 @@ export interface Review {
   verified: boolean;
 }
 
-export interface JournalEntry {
+// Renamed from JournalEntry to EventEntry
+export interface EventEntry {
   id: string;
   title: string;
   subtitle: string;
   image: string;
   date: string;
   category: string;
+  location?: string; // Added location field for events
 }
 
 export type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'newest';
