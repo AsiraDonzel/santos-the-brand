@@ -5,6 +5,17 @@ import dotenv from "dotenv";
 import { apiLimiter } from "./middlewares/rateLimiter.js";
 import connectDB from "./config/database.js";
 import errorHandler from "./middlewares/errorhandler.js";
+import {websiteLockMiddleware} from "./middlewares/websiteLock.js";
+
+
+import adminRoute from "./routes/adminRoute.js";
+import productRoute from "./routes/productRoute.js";
+import lockRoute from "./routes/lockRoute.js";
+import reviewRoute from "./routes/reviewRoute.js";
+import orderRoute from "./routes/orderRoute.js";
+import newsletterRoute from "./routes/newsletterRoute.js";
+import promoRoute from "./routes/promoRoute.js";
+
 
 export const app = express();
 const server = http.createServer(app);
@@ -25,6 +36,17 @@ app.get("/", (req, res) => {
 });
 
 connectDB();
+
+app.use(websiteLockMiddleware)
+
+// Routes
+app.use('/admin', adminRoute);
+app.use('/product', productRoute);
+app.use('/lock', lockRoute);
+app.use('/review', reviewRoute);
+app.use('/order', orderRoute);
+app.use('/newsletter', newsletterRoute);
+app.use('/promo', promoRoute);
 
 app.use(errorHandler);
 
