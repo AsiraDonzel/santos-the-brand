@@ -141,7 +141,7 @@ export const EVENT_ENTRIES: EventEntry[] = [ // Updated type
     subtitle: "A two-day event bringing communities together through sport for a meaningful cause and collective grit.",
     category: "Impact",
     date: "Oct 2025",
-    location: "Nigeria", // Added location
+    location: "Lagos, Nigeria", // Added location
     image: "/img4.JPG"
   }
 ];
