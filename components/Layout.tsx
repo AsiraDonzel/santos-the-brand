@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { ShoppingBag, Search, Menu, X, User as UserIcon, LogOut, Heart } from 'lucide-react';
+import { ShoppingBag, Search, Menu, X, User as UserIcon, LogOut, Heart, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SearchOverlay from './SearchOverlay';
 import RecentHistoryBar from './RecentHistoryBar';
@@ -196,6 +196,8 @@ const Layout: React.FC<LayoutProps> = ({
                         <p className="text-xs text-slate-400 uppercase tracking-wide">Signed in as</p>
                         <p className="font-bold text-sm truncate">{user.name}</p>
                       </div>
+
+
                       <Link to="/dashboard" className="block px-4 py-2 text-sm hover:bg-gray-50 text-slate-700">Dashboard</Link>
                       <Link to="/wishlist" className="block px-4 py-2 text-sm hover:bg-gray-50 text-slate-700">Wishlist</Link>
                       <button 
@@ -239,10 +241,10 @@ const Layout: React.FC<LayoutProps> = ({
               className="fixed top-0 left-0 bottom-0 w-[85%] max-w-sm bg-white z-[60] p-8 lg:hidden shadow-2xl flex flex-col"
             >
               <div className="flex justify-between items-center mb-12">
-                 <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
-                   <img src="/public/santos-logo.png" alt="SANTOS" className="w-16 h-16 object-contain" />
-                 </Link>
-                 <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 -mr-2 text-slate-500 hover:text-slate-900"><X className="w-6 h-6" /></button>
+                  <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
+                    <img src="/public/santos-logo.png" alt="SANTOS" className="w-16 h-16 object-contain" />
+                  </Link>
+                  <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 -mr-2 text-slate-500 hover:text-slate-900"><X className="w-6 h-6" /></button>
               </div>
               <div className="flex flex-col space-y-2">
                 <MobileNavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</MobileNavLink>
