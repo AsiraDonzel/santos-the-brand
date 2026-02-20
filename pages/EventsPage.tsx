@@ -11,21 +11,21 @@ const EventsPage = () => {
       <div className="bg-primary-950 text-white py-24 md:py-40 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="text-xs font-bold uppercase tracking-[0.4em] text-primary-400 mb-6 block"
           >
             The Movement
           </motion.span>
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             className="font-serif text-5xl md:text-8xl font-medium mb-8"
           >
             SANTOS Experiences
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -51,9 +51,9 @@ const EventsPage = () => {
             >
               {/* Event Image */}
               <div className="relative aspect-square overflow-hidden">
-                <img 
-                  src={event.image} 
-                  alt={event.title} 
+                <img
+                  src={event.image}
+                  alt={event.title}
                   className="w-full h-full object-cover transition-transform duration-1000 ease-luxury group-hover:scale-110"
                 />
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary-950">
@@ -74,35 +74,21 @@ const EventsPage = () => {
                     <span>{event.location || "Nigeria"}</span>
                   </div>
                 </div>
-                
+
                 <h2 className="font-serif text-2xl text-primary-950 mb-4 leading-tight group-hover:text-primary-700 transition-colors">
                   {event.title}
                 </h2>
-                
+
                 <p className="text-slate-500 font-light text-sm mb-8 line-clamp-3 leading-relaxed">
                   {event.subtitle}
                 </p>
 
-                <div className="mt-auto relative inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary-950 group-hover:text-primary-700 transition-colors">
-                  View Gallery <ArrowUpRight className="w-4 h-4" />
-                  <span className="absolute -bottom-1 left-0 w-full h-[1px] bg-primary-200 origin-left transform scale-x-0 transition-transform duration-500 ease-luxury group-hover:scale-x-100 group-hover:bg-primary-600" />
-                </div>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* CTA Section */}
-      <section className="mt-32 px-6">
-        <div className="max-w-4xl mx-auto bg-primary-50 p-12 md:p-20 text-center border border-primary-100">
-           <h3 className="font-serif text-3xl md:text-5xl text-primary-950 mb-6">Stay for the next win.</h3>
-           <p className="text-slate-600 mb-10 max-w-lg mx-auto font-light">Join our community to receive exclusive invites to private showcases and charity events.</p>
-           <button className="bg-primary-950 text-white px-10 py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-primary-800 transition-colors">
-              Join the Movement
-           </button>
-        </div>
-      </section>
     </div>
   );
 };

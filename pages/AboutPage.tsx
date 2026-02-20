@@ -60,13 +60,13 @@ const AboutPage = () => {
 
   return (
     <PageTransition>
-      <div className="bg-white min-h-screen pt-16 lg:pt-0">
-        
+      <div className="bg-white min-h-screen pt-28 lg:pt-36">
+
         {/* --- SECTION 1: HERO SPLIT --- */}
-        <div className="flex flex-col lg:flex-row min-h-screen">
-          <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-12 lg:p-24 bg-stone-50">
+        <div className="flex flex-col lg:flex-row lg:min-h-[calc(100vh-10rem)] max-w-[1440px] mx-auto px-6 lg:px-12 gap-8 lg:gap-12 pb-12">
+          <div className="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-12 lg:p-24 bg-stone-50 rounded-sm">
             <div className="max-w-xl">
-              <motion.span 
+              <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
@@ -77,7 +77,7 @@ const AboutPage = () => {
               <TextReveal className="font-serif text-5xl md:text-7xl text-primary-950 mb-8 leading-tight">
                 The Santos Story
               </TextReveal>
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.8 }}
@@ -96,17 +96,19 @@ const AboutPage = () => {
             </div>
           </div>
 
-          <div className="w-full lg:w-1/2 h-[50vh] lg:h-auto relative overflow-hidden bg-black">
-            <SpotlightEffect className="w-full h-full">
-              <motion.img 
-                initial={{ scale: 1.2 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 2, ease: "easeOut" }}
-                src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=2073&auto=format&fit=crop" 
-                alt="Fashion Model" 
-                className="w-full h-full object-cover opacity-80"
+          <div className="w-full lg:w-1/2 min-h-[50vh] lg:min-h-full relative overflow-hidden bg-stone-900 group rounded-sm">
+            <SpotlightEffect className="absolute inset-0 w-full h-full">
+              <motion.img
+                initial={{ scale: 1.2, opacity: 0 }}
+                animate={{ scale: 1, opacity: 0.9 }}
+                transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+                src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=2073&auto=format&fit=crop"
+                alt="SANTOS Editorial Model"
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-[3s] ease-out"
               />
             </SpotlightEffect>
+            {/* Subtle Vignette for Editorial Look */}
+            <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/60 via-black/5 to-black/30 z-40 mix-blend-multiply opacity-80 transition-opacity duration-700 group-hover:opacity-100" />
           </div>
         </div>
 
@@ -141,19 +143,19 @@ const AboutPage = () => {
               Resilience • Identity • Community • Impact
             </p>
           </div>
-          
+
           <div className="relative">
-            <motion.div 
-              style={{ x: `${position}%` }} 
+            <motion.div
+              style={{ x: `${position}%` }}
               className="flex gap-8 w-max px-6"
             >
               {INFINITE_VALUES.map((value, idx) => (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   className="w-[300px] md:w-[400px] bg-white/5 backdrop-blur-sm border border-white/10 p-8 flex flex-col justify-between"
                 >
                   <div>
-                    <span className="text-primary-500 font-mono text-sm mb-4 block">0{ (idx % 8) + 1 }</span>
+                    <span className="text-primary-500 font-mono text-sm mb-4 block">0{(idx % 8) + 1}</span>
                     <h3 className="font-serif text-2xl mb-4 text-primary-100">{value.title}</h3>
                     <p className="text-white/60 leading-relaxed font-light text-sm">
                       {value.description}
@@ -173,23 +175,23 @@ const AboutPage = () => {
         {/* --- SECTION 4: THE TEAM --- */}
         <section className="py-32 px-6 bg-stone-50">
           <div className="max-w-5xl mx-auto">
-             <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-start">
-                <div className="lg:col-span-2">
-                   <h2 className="font-serif text-4xl text-primary-950 mb-4">The Visionary</h2>
-                   <p className="text-primary-500 uppercase tracking-widest text-xs font-bold">Anekwe Paschal</p>
-                </div>
-                <div className="lg:col-span-3 text-lg text-slate-700 leading-relaxed font-light space-y-8">
-                  <p>
-                    A stylist and fashion designer from Nigeria, Paschal built SANTOS to blend grace, grit, and culture—proving fashion can be meaningful, inclusive, and impactful.
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-start">
+              <div className="lg:col-span-2">
+                <h2 className="font-serif text-4xl text-primary-950 mb-4">The Visionary</h2>
+                <p className="text-primary-500 uppercase tracking-widest text-xs font-bold">Anekwe Paschal</p>
+              </div>
+              <div className="lg:col-span-3 text-lg text-slate-700 leading-relaxed font-light space-y-8">
+                <p>
+                  A stylist and fashion designer from Nigeria, Paschal built SANTOS to blend grace, grit, and culture—proving fashion can be meaningful, inclusive, and impactful.
+                </p>
+                <div>
+                  <p className="text-xs uppercase tracking-widest font-bold text-slate-400 mb-4 border-b border-slate-200 pb-2">The Core Team</p>
+                  <p className="text-slate-500 text-base">
+                    Ndubuisi Henry, Ndubuisi Ikenna, Ene Reginald, and Eze Henry.
                   </p>
-                  <div>
-                    <p className="text-xs uppercase tracking-widest font-bold text-slate-400 mb-4 border-b border-slate-200 pb-2">The Core Team</p>
-                    <p className="text-slate-500 text-base">
-                      Ndubuisi Henry, Ndubuisi Ikenna, Ene Reginald, and Eze Henry.
-                    </p>
-                  </div>
                 </div>
-             </div>
+              </div>
+            </div>
           </div>
         </section>
 

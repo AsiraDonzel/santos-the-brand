@@ -38,7 +38,7 @@ const SpotlightEffect: React.FC<SpotlightEffectProps> = ({ children, className =
       className={`relative overflow-hidden group ${className}`}
     >
       {/* Content Layer (Dimmed/Blurred by default or obscured) */}
-      <div className="relative z-10 transition-all duration-500 filter grayscale group-hover:grayscale-0">
+      <div className="relative z-10 transition-all duration-500 filter grayscale group-hover:grayscale-0 w-full h-full">
         {children}
       </div>
 
@@ -50,16 +50,16 @@ const SpotlightEffect: React.FC<SpotlightEffectProps> = ({ children, className =
           background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(168,85,247,0.15), transparent 40%)`,
         }}
       />
-      
+
       {/* High Clarity Reveal Mask (Optional advanced effect) */}
       {/* This simulates a flashlight revealing color/clarity in a dark room */}
-      <div 
-         className="pointer-events-none absolute inset-0 z-20 bg-primary-950/40 transition-opacity duration-500 group-hover:bg-primary-950/20"
-         style={{
-           maskImage: `radial-gradient(250px circle at ${position.x}px ${position.y}px, black, transparent)`,
-           WebkitMaskImage: `radial-gradient(250px circle at ${position.x}px ${position.y}px, black, transparent)`,
-           opacity: isHovered ? 0 : 0.6 // Invert logic: show dim layer, hide it under spotlight
-         }}
+      <div
+        className="pointer-events-none absolute inset-0 z-20 bg-primary-950/40 transition-opacity duration-500 group-hover:bg-primary-950/20"
+        style={{
+          maskImage: `radial-gradient(250px circle at ${position.x}px ${position.y}px, black, transparent)`,
+          WebkitMaskImage: `radial-gradient(250px circle at ${position.x}px ${position.y}px, black, transparent)`,
+          opacity: isHovered ? 0 : 0.6 // Invert logic: show dim layer, hide it under spotlight
+        }}
       />
     </div>
   );
