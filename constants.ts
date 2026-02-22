@@ -1,9 +1,48 @@
-import { Product, EventEntry, Review } from './types'; // Updated import
+import { Product, EventEntry, Review, Order } from './types'; // Updated import
 
 export const CATEGORIES = ["All", "Dresses", "Outerwear", "Tops", "Accessories"];
 
 const generateReviews = (productId: string): Review[] => [
   // Reviews can be populated here if needed
+];
+
+export const MOCK_ORDERS: Order[] = [
+  {
+    id: 'ORD-2026-001',
+    customer: 'Alice Doe',
+    email: 'alice@example.com',
+    phone: '+1 234 567 8900',
+    total: 1345,
+    subtotal: 1300,
+    shipping: 25,
+    tax: 20,
+    status: 'Pending',
+    deliveryStatus: 'Pending',
+    date: '2026-02-20',
+    shippingAddress: '123 Creative Avenue, Design District, NY 10001',
+    items: [
+      { productId: '1', name: 'Amethyst Silk Evening Gown', price: 895, quantity: 1, image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800', variation: 'S | Amethyst' },
+      { productId: '2', name: 'Lavender Wool Trench', price: 450, quantity: 1, image: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=800', variation: 'M | Camel' }
+    ]
+  },
+  {
+    id: 'ORD-2026-002',
+    customer: 'Bob Smith',
+    email: 'bob@example.com',
+    phone: '+44 7700 900077',
+    total: 340,
+    subtotal: 320,
+    shipping: 20,
+    tax: 0,
+    status: 'Completed',
+    deliveryStatus: 'Packaged',
+    date: '2026-02-19',
+    shippingAddress: '45 London Road, Victoria, London SW1V 1AA UK',
+    trackingNumber: 'TRK-9988776655',
+    items: [
+      { productId: '3', name: 'Midnight Velvet Blazer', price: 320, quantity: 1, image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800', variation: 'L | Midnight' }
+    ]
+  }
 ];
 
 export const PRODUCTS: Product[] = [
@@ -148,3 +187,11 @@ export const EVENT_ENTRIES: EventEntry[] = [ // Updated type
 
 // Alias for backwards compatibility 
 export const JOURNAL_ENTRIES = EVENT_ENTRIES;
+
+export const SHOWCASE_ITEMS = [
+  { id: 'sc1', src: "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2071&auto=format&fit=crop", name: 'First Look', date: 'Nov 2025' },
+  { id: 'sc2', src: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070&auto=format&fit=crop", name: 'The Setup', date: 'Nov 2025' },
+  { id: 'sc3', src: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=2073&auto=format&fit=crop", name: 'Walkway Rehearsal', date: 'Oct 2025' },
+  { id: 'sc4', src: "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?q=80&w=1970&auto=format&fit=crop", name: 'Model Focus', date: 'Oct 2025' },
+  { id: 'sc5', src: "https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?q=80&w=2070&auto=format&fit=crop", name: 'Opening Event', date: 'Dec 2025' }
+];
