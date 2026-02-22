@@ -116,3 +116,44 @@ export interface GalleryImage {
     format?: string;
   };
 }
+
+export interface ShowcaseItem {
+  id: string;
+  src: string;
+  name: string;
+  date: string;
+}
+
+export interface OrderItem {
+  productId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+  variation?: string;
+}
+
+export interface Order {
+  id: string;
+  customer: string;
+  email: string;
+  phone?: string;
+  total: number;
+  subtotal: number;
+  shipping: number;
+  tax: number;
+  status: 'Pending' | 'Completed' | 'Cancelled';
+  deliveryStatus: 'Pending' | 'Packaged' | 'Sent Out' | 'Delivered' | 'Received';
+  date: string;
+  shippingAddress: string;
+  trackingNumber?: string;
+  items: OrderItem[];
+}
+
+export interface PromoCode {
+  id: string;
+  code: string;
+  discountPercentage: number;
+  isActive: boolean;
+  usageCount?: number;
+}

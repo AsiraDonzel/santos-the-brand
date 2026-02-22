@@ -3,84 +3,77 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ZoomIn, Info, Camera, MapPin } from 'lucide-react';
 import GalleryItem from '../components/GalleryItem';
 import PageTransition from '../components/PageTransition';
+import { SHOWCASE_ITEMS } from '../constants';
 
 // Tailored Gallery Data aligned with Events
 const GALLERY_ITEMS = [
-  { 
-    id: 'g1', 
-    src: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=1287&auto=format&fit=crop', 
-    title: 'Backstage Elegance', 
-    category: 'Runway Showcase', 
+  {
+    id: 'g1',
+    src: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=1287&auto=format&fit=crop',
+    title: 'Backstage Elegance',
+    category: 'Runway Showcase',
     location: 'Lagos, Nigeria',
-    span: 'col-span-1 row-span-2' 
+    span: 'col-span-1 row-span-2'
   },
-  { 
-    id: 'g2', 
-    src: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2076&auto=format&fit=crop', 
-    title: 'The Sacred Stitch', 
-    category: 'The New Curriculum', 
+  {
+    id: 'g2',
+    src: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2076&auto=format&fit=crop',
+    title: 'The Sacred Stitch',
+    category: 'The New Curriculum',
     location: 'Atelier',
-    span: 'col-span-1 row-span-1' 
+    span: 'col-span-1 row-span-1'
   },
-  { 
-    id: 'g3', 
-    src: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2070&auto=format&fit=crop', 
-    title: 'Grit in Motion', 
-    category: 'Charity Sports', 
+  {
+    id: 'g3',
+    src: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2070&auto=format&fit=crop',
+    title: 'Grit in Motion',
+    category: 'Charity Sports',
     location: 'Lagos Stadium',
-    span: 'col-span-1 row-span-1' 
+    span: 'col-span-1 row-span-1'
   },
-  { 
-    id: 'g4', 
-    src: 'https://images.unsplash.com/photo-1551232864-3f0890e580d9?q=80&w=2000&auto=format&fit=crop', 
-    title: 'Collection Finale', 
-    category: 'Runway Showcase', 
+  {
+    id: 'g4',
+    src: 'https://images.unsplash.com/photo-1551232864-3f0890e580d9?q=80&w=2000&auto=format&fit=crop',
+    title: 'Collection Finale',
+    category: 'Runway Showcase',
     location: 'Main Stage',
-    span: 'col-span-1 row-span-1' 
+    span: 'col-span-1 row-span-1'
   },
-  { 
-    id: 'g5', 
-    src: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?q=80&w=2069&auto=format&fit=crop', 
-    title: 'Cake Fest Conversations', 
-    category: 'Private Cake Fest', 
+  {
+    id: 'g5',
+    src: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?q=80&w=2069&auto=format&fit=crop',
+    title: 'Cake Fest Conversations',
+    category: 'Private Cake Fest',
     location: 'Victoria Island',
-    span: 'col-span-2 row-span-2' 
+    span: 'col-span-2 row-span-2'
   },
-  { 
-    id: 'g6', 
-    src: 'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?q=80&w=1972&auto=format&fit=crop', 
-    title: 'Textural Grace', 
-    category: 'The Sacred Collection', 
+  {
+    id: 'g6',
+    src: 'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?q=80&w=1972&auto=format&fit=crop',
+    title: 'Textural Grace',
+    category: 'The Sacred Collection',
     location: 'Studio',
-    span: 'col-span-1 row-span-1' 
+    span: 'col-span-1 row-span-1'
   },
-  { 
-    id: 'g7', 
-    src: 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=2069&auto=format&fit=crop', 
-    title: 'Community Spirit', 
-    category: 'Charity Sports', 
+  {
+    id: 'g7',
+    src: 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=2069&auto=format&fit=crop',
+    title: 'Community Spirit',
+    category: 'Charity Sports',
     location: 'Nigeria',
-    span: 'col-span-1 row-span-2' 
+    span: 'col-span-1 row-span-2'
   },
-  { 
-    id: 'g8', 
-    src: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop', 
-    title: 'Modern Silhouette', 
-    category: 'Bold Visionaries', 
+  {
+    id: 'g8',
+    src: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop',
+    title: 'Modern Silhouette',
+    category: 'Bold Visionaries',
     location: 'Street Campaign',
-    span: 'col-span-1 row-span-1' 
+    span: 'col-span-1 row-span-1'
   },
 ];
 
-const FILMSTRIP_IMAGES = [
-  "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2071&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=2073&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?q=80&w=1970&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?q=80&w=2070&auto=format&fit=crop"
-];
-
-const duplicatedImages = [...FILMSTRIP_IMAGES, ...FILMSTRIP_IMAGES];
+const duplicatedImages = [...SHOWCASE_ITEMS, ...SHOWCASE_ITEMS];
 
 const GalleryPage = () => {
   const [selectedItem, setSelectedItem] = useState<typeof GALLERY_ITEMS[0] | null>(null);
@@ -98,16 +91,16 @@ const GalleryPage = () => {
             transition={{ duration: 1.5 }}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-primary-900/10 blur-[120px] rounded-full"
           />
-          
-          <motion.span 
+
+          <motion.span
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-primary-400 font-bold tracking-[0.4em] uppercase text-xs mb-4 block relative z-10"
           >
             Visual Archive
           </motion.span>
-          
-          <motion.h1 
+
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
@@ -115,8 +108,8 @@ const GalleryPage = () => {
           >
             SANTOS Lens
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
@@ -177,20 +170,20 @@ const GalleryPage = () => {
             }}
             className="flex gap-4 pl-6 w-max"
           >
-            {duplicatedImages.map((src, i) => (
+            {duplicatedImages.map((item, i) => (
               <div
-                key={i}
+                key={`${item.id}-${i}`}
                 // Reduced width and height (aspect-video changed to a tighter custom height)
                 className="w-[60vw] md:w-[450px] h-[250px] md:h-[300px] relative overflow-hidden group"
               >
-                <img 
-                  src={src} 
-                  alt="SANTOS Runway" 
-                  className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" 
+                <img
+                  src={item.src}
+                  alt={item.name}
+                  className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105 cursor-pointer"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6 pointer-events-none">
                   <span className="text-[9px] uppercase tracking-[0.4em] font-medium text-white/80">
-                    Frame 00{i + 1} // 2025
+                    {item.name} // {item.date}
                   </span>
                 </div>
               </div>
@@ -221,9 +214,8 @@ const GalleryPage = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <div
-                  className={`relative flex-1 h-full overflow-hidden transition-all duration-1000 ease-luxury ${
-                    isTextureMode ? 'scale-[2.5] origin-center cursor-zoom-out' : 'cursor-zoom-in'
-                  }`}
+                  className={`relative flex-1 h-full overflow-hidden transition-all duration-1000 ease-luxury ${isTextureMode ? 'scale-[2.5] origin-center cursor-zoom-out' : 'cursor-zoom-in'
+                    }`}
                   onClick={() => setIsTextureMode(!isTextureMode)}
                 >
                   <motion.img
@@ -241,17 +233,17 @@ const GalleryPage = () => {
                 <div className="w-full md:w-96 bg-[#0a0a0a] p-10 border-l border-white/5 flex flex-col">
                   <div className="mb-auto">
                     <div className="flex items-center gap-2 text-primary-500 mb-4">
-                       <Camera className="w-4 h-4" />
-                       <span className="text-[10px] font-bold uppercase tracking-widest">SANTOS Digital Archive</span>
+                      <Camera className="w-4 h-4" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest">SANTOS Digital Archive</span>
                     </div>
                     <h2 className="font-serif text-4xl mb-4 leading-tight">{selectedItem.title}</h2>
                     <div className="space-y-3 mb-10">
-                       <p className="text-white font-bold uppercase tracking-widest text-[10px] bg-white/5 inline-block px-3 py-1">
+                      <p className="text-white font-bold uppercase tracking-widest text-[10px] bg-white/5 inline-block px-3 py-1">
                         {selectedItem.category}
                       </p>
                       <div className="flex items-center gap-2 text-slate-400 text-xs">
-                         <MapPin className="w-3 h-3" />
-                         <span>{selectedItem.location}</span>
+                        <MapPin className="w-3 h-3" />
+                        <span>{selectedItem.location}</span>
                       </div>
                     </div>
                     <p className="text-slate-500 font-light leading-relaxed text-sm">

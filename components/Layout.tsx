@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import SearchOverlay from './SearchOverlay';
 import RecentHistoryBar from './RecentHistoryBar';
 import { User, Product } from '../types';
+import ReviewOverlay from './ReviewOverlay';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -78,8 +79,10 @@ const Layout: React.FC<LayoutProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isReviewOverlayOpen, setIsReviewOverlayOpen] = useState(false);
   const location = useLocation();
   const isGallery = location.pathname === '/gallery';
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -99,82 +102,87 @@ const Layout: React.FC<LayoutProps> = ({
     <div className="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-primary-200 selection:text-primary-900 relative">
       <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
+      {/* Review Overlay */}
+      <ReviewOverlay isOpen={isReviewOverlayOpen} onClose={() => setIsReviewOverlayOpen(false)} />
+
       {/* Navigation */}
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-luxury ${isScrolled
-          ? (isGallery ? 'bg-black/90 backdrop-blur-md border-b border-white/10 py-2 shadow-sm' : 'bg-white/90 backdrop-blur-md border-b border-gray-100 py-2 shadow-sm')
-          : 'bg-transparent py-4 border-b border-transparent'
-          }`}
-      >
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12 grid grid-cols-3 items-center">
+      {!isAdminRoute && (
+        <header
+          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-luxury ${isScrolled
+            ? (isGallery ? 'bg-black/90 backdrop-blur-md border-b border-white/10 py-2 shadow-sm' : 'bg-white/90 backdrop-blur-md border-b border-gray-100 py-2 shadow-sm')
+            : 'bg-transparent py-4 border-b border-transparent'
+            }`}
+        >
+          <div className="max-w-[1440px] mx-auto px-6 lg:px-12 grid grid-cols-3 items-center">
 
-          {/* Left: Brand / Mobile Menu */}
-          <div className="flex items-center justify-start">
-            <button
-              className={`lg:hidden p-2 -ml-2 ${isGallery ? 'text-primary-500 hover:text-white' : 'text-slate-900'}`}
-              onClick={() => setIsMobileMenuOpen(true)}
-            >
-              <Menu className="w-6 h-6" />
-            </button>
+            {/* Left: Brand / Mobile Menu */}
+            <div className="flex items-center justify-start">
+              <button
+                className={`lg:hidden p-2 -ml-2 ${isGallery ? 'text-primary-500 hover:text-white' : 'text-slate-900'}`}
+                onClick={() => setIsMobileMenuOpen(true)}
+              >
+                <Menu className="w-6 h-6" />
+              </button>
 
-            <Link to="/" className="z-50">
-              <Logo isSticky={isScrolled} />
-            </Link>
+              <Link to="/" className="z-50">
+                <Logo isSticky={isScrolled} />
+              </Link>
+            </div>
+
+            {/* Center: Links (Desktop) */}
+            <nav className="hidden lg:flex items-center justify-center space-x-10">
+              <NavLink to="/shop">Shop</NavLink>
+              <NavLink to="/gallery">Gallery</NavLink>
+              <NavLink to="/events">Events</NavLink>
+              <NavLink to="/about">About</NavLink>
+            </nav>
+
+            {/* Right: Actions */}
+            <div className="flex items-center justify-end space-x-6">
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className={`${isGallery ? 'text-primary-500 hover:text-white' : 'text-slate-800 hover:text-primary-600'} transition-colors`}
+              >
+                <Search className="w-5 h-5" />
+              </button>
+
+              <Link to="/wishlist" className={`${isGallery ? 'text-primary-500 hover:text-white' : 'text-slate-800 hover:text-primary-600'} transition-colors relative hidden sm:block`}>
+                <Heart className="w-5 h-5" />
+                <AnimatePresence>
+                  {wishlistCount > 0 && (
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      className="absolute -top-1 -right-1 w-3 h-3 bg-primary-500 rounded-full border-2 border-white"
+                    />
+                  )}
+                </AnimatePresence>
+              </Link>
+
+              <Link to="/cart" className={`${isGallery ? 'text-primary-500 hover:text-white' : 'text-slate-800 hover:text-primary-600'} transition-colors relative`}>
+                <ShoppingBag className="w-5 h-5" />
+                <AnimatePresence>
+                  {cartCount > 0 && (
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0 }}
+                      className="absolute -top-1 -right-1 w-3 h-3 bg-primary-500 rounded-full border-2 border-white"
+                    />
+                  )}
+                </AnimatePresence>
+              </Link>
+
+
+            </div>
           </div>
-
-          {/* Center: Links (Desktop) */}
-          <nav className="hidden lg:flex items-center justify-center space-x-10">
-            <NavLink to="/shop">Shop</NavLink>
-            <NavLink to="/gallery">Gallery</NavLink>
-            <NavLink to="/events">Events</NavLink>
-            <NavLink to="/about">About</NavLink>
-          </nav>
-
-          {/* Right: Actions */}
-          <div className="flex items-center justify-end space-x-6">
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              className={`${isGallery ? 'text-primary-500 hover:text-white' : 'text-slate-800 hover:text-primary-600'} transition-colors`}
-            >
-              <Search className="w-5 h-5" />
-            </button>
-
-            <Link to="/wishlist" className={`${isGallery ? 'text-primary-500 hover:text-white' : 'text-slate-800 hover:text-primary-600'} transition-colors relative hidden sm:block`}>
-              <Heart className="w-5 h-5" />
-              <AnimatePresence>
-                {wishlistCount > 0 && (
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0 }}
-                    className="absolute -top-1 -right-1 w-3 h-3 bg-primary-500 rounded-full border-2 border-white"
-                  />
-                )}
-              </AnimatePresence>
-            </Link>
-
-            <Link to="/cart" className={`${isGallery ? 'text-primary-500 hover:text-white' : 'text-slate-800 hover:text-primary-600'} transition-colors relative`}>
-              <ShoppingBag className="w-5 h-5" />
-              <AnimatePresence>
-                {cartCount > 0 && (
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0 }}
-                    className="absolute -top-1 -right-1 w-3 h-3 bg-primary-500 rounded-full border-2 border-white"
-                  />
-                )}
-              </AnimatePresence>
-            </Link>
-
-
-          </div>
-        </div>
-      </header>
+        </header>
+      )}
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {isMobileMenuOpen && !isAdminRoute && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
@@ -221,55 +229,58 @@ const Layout: React.FC<LayoutProps> = ({
       )}
 
       {/* Footer - Simplified for Luxury */}
-      <footer className="bg-white border-t border-gray-100 text-slate-900 pt-20 pb-12">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div className="space-y-6 md:col-span-1">
-            <Link to="/" className="inline-block group">
-              <img src="/santos-logo.png" alt="SANTOS" className="w-24 h-24 object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
-            </Link>
-          </div>
+      {!isAdminRoute && (
+        <footer className="bg-white border-t border-gray-100 text-slate-900 pt-20 pb-12">
+          <div className="max-w-[1440px] mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div className="space-y-6 md:col-span-1">
+              <Link to="/" className="inline-block group">
+                <img src="/santos-logo.png" alt="SANTOS" className="w-24 h-24 object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
+              </Link>
+            </div>
 
-          <div>
-            <h4 className="font-bold text-xs uppercase tracking-widest mb-6 text-slate-400">Discovery</h4>
-            <ul className="space-y-4 text-sm font-light">
-              <li><Link to="/about" className="hover:text-primary-600 transition-colors">Our Story</Link></li>
-              <li><Link to="/shop" className="hover:text-primary-600 transition-colors">Collections</Link></li>
-              <li><Link to="/events" className="hover:text-primary-600 transition-colors">Events</Link></li>
-              <li><Link to="/wishlist" className="hover:text-primary-600 transition-colors">Wishlist</Link></li>
-            </ul>
-          </div>
+            <div>
+              <h4 className="font-bold text-xs uppercase tracking-widest mb-6 text-slate-400">Discovery</h4>
+              <ul className="space-y-4 text-sm font-light">
+                <li><Link to="/about" className="hover:text-primary-600 transition-colors">Our Story</Link></li>
+                <li><Link to="/shop" className="hover:text-primary-600 transition-colors">Collections</Link></li>
+                <li><Link to="/events" className="hover:text-primary-600 transition-colors">Events</Link></li>
+                <li><Link to="/wishlist" className="hover:text-primary-600 transition-colors">Wishlist</Link></li>
+                <li><button onClick={() => setIsReviewOverlayOpen(true)} className="hover:text-primary-600 transition-colors text-left uppercase text-xs font-bold tracking-widest mt-2 bg-primary-50 px-3 py-1 text-primary-900 rounded-sm">Leave a Review</button></li>
+              </ul>
+            </div>
 
-          <div>
-            <h4 className="font-bold text-xs uppercase tracking-widest mb-6 text-slate-400">Client Care</h4>
-            <ul className="space-y-4 text-sm font-light">
-              <li><Link to="/contact" className="hover:text-primary-600 transition-colors">Contact Us</Link></li>
-              <li><Link to="/policies" className="hover:text-primary-600 transition-colors">Shipping & Returns</Link></li>
-              <li><Link to="/policies" className="hover:text-primary-600 transition-colors">FAQ</Link></li>
-              <li><Link to="/terms" className="hover:text-primary-600 transition-colors">Terms & Conditions</Link></li>
-              <li><Link to="/privacy" className="hover:text-primary-600 transition-colors">Privacy Policy</Link></li>
-            </ul>
-          </div>
+            <div>
+              <h4 className="font-bold text-xs uppercase tracking-widest mb-6 text-slate-400">Client Care</h4>
+              <ul className="space-y-4 text-sm font-light">
+                <li><Link to="/contact" className="hover:text-primary-600 transition-colors">Contact Us</Link></li>
+                <li><Link to="/policies" className="hover:text-primary-600 transition-colors">Shipping & Returns</Link></li>
+                <li><Link to="/policies" className="hover:text-primary-600 transition-colors">FAQ</Link></li>
+                <li><Link to="/terms" className="hover:text-primary-600 transition-colors">Terms & Conditions</Link></li>
+                <li><Link to="/privacy" className="hover:text-primary-600 transition-colors">Privacy Policy</Link></li>
+              </ul>
+            </div>
 
-          <div>
-            <h4 className="font-bold text-xs uppercase tracking-widest mb-6 text-slate-400">Newsletter</h4>
-            <div className="flex border-b border-primary-200 pb-2 relative group focus-within:border-primary-600 transition-colors duration-300">
-              <input
-                type="email"
-                placeholder="EMAIL ADDRESS"
-                className="bg-transparent border-none outline-none text-sm w-full placeholder:text-slate-300 text-primary-950 z-10"
-              />
-              <button className="text-xs font-bold uppercase tracking-widest text-primary-600 hover:text-primary-800 transition-colors z-10">
-                Join
-              </button>
-              <div className="absolute bottom-0 left-0 w-full h-[2px] bg-primary-600 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-500 ease-luxury origin-left" />
+            <div>
+              <h4 className="font-bold text-xs uppercase tracking-widest mb-6 text-slate-400">Newsletter</h4>
+              <div className="flex border-b border-primary-200 pb-2 relative group focus-within:border-primary-600 transition-colors duration-300">
+                <input
+                  type="email"
+                  placeholder="EMAIL ADDRESS"
+                  className="bg-transparent border-none outline-none text-sm w-full placeholder:text-slate-300 text-primary-950 z-10"
+                />
+                <button className="text-xs font-bold uppercase tracking-widest text-primary-600 hover:text-primary-800 transition-colors z-10">
+                  Join
+                </button>
+                <div className="absolute bottom-0 left-0 w-full h-[2px] bg-primary-600 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-500 ease-luxury origin-left" />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12 mt-20 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-400 uppercase tracking-widest">
-          <p>© {new Date().getFullYear()} SANTOS. All rights reserved.</p>
-          <p>Designed for Elegance.</p>
-        </div>
-      </footer>
+          <div className="max-w-[1440px] mx-auto px-6 lg:px-12 mt-20 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-400 uppercase tracking-widest">
+            <p>© {new Date().getFullYear()} SANTOS. All rights reserved.</p>
+            <p>Designed for Elegance.</p>
+          </div>
+        </footer>
+      )}
     </div>
   );
 };
