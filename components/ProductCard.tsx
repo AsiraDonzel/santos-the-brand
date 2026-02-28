@@ -17,6 +17,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
   isWishlisted = false, 
   onToggleWishlist 
 }) => {
+
+  // console.log(product);
+  
   return (
     <motion.div 
       variants={{
@@ -34,16 +37,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
         )}
 
         {/* Links & Images */}
-        <Link to={`/product/${product.id}`} className="block h-full w-full">
+        <Link to={`/product/${product._id}`} className="block h-full w-full">
            <img
-            src={product.image}
+            src={product.images[0]}
             alt={product.name}
             className="h-full w-full object-cover object-center transition-opacity duration-700 ease-in-out group-hover:opacity-0"
             loading="lazy"
           />
           <img
-            src={product.hoverImage || product.image}
-            alt={`${product.name} alternate view`}
+            src={product.hoverImage || product.images[0]}
+            alt={`${product.title} alternate view`}
             className="absolute inset-0 h-full w-full object-cover object-center opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100"
             loading="lazy"
           />
@@ -85,10 +88,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       <div className="mt-6 flex flex-col items-center text-center">
         <p className="text-xs text-slate-400 uppercase tracking-widest mb-1">{product.category}</p>
-        <Link to={`/product/${product.id}`} className="group-hover:text-primary-600 transition-colors">
-          <h3 className="font-serif text-xl text-primary-950">{product.name}</h3>
+        <Link to={`/product/${product._id}`} className="group-hover:text-primary-600 transition-colors">
+          <h3 className="font-serif text-xl text-primary-950">{product.title}</h3>
         </Link>
-        <p className="mt-2 text-sm font-medium text-slate-900">${product.price.toLocaleString()}</p>
+        <p className="mt-2 text-sm font-medium text-slate-900">${product.basePrice.toLocaleString()}</p>
       </div>
     </motion.div>
   );

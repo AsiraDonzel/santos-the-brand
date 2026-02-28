@@ -4,82 +4,28 @@ import { X, ZoomIn, Info, Camera, MapPin } from 'lucide-react';
 import GalleryItem from '../components/GalleryItem';
 import PageTransition from '../components/PageTransition';
 import { SHOWCASE_ITEMS } from '../constants';
+import { useGallery, useShowcase } from '@/hooks/storeHooks';
+import Loader from '@/components/Loader';
+import Error404 from './Error404';
 
-// Tailored Gallery Data aligned with Events
-const GALLERY_ITEMS = [
-  {
-    id: 'g1',
-    src: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=1287&auto=format&fit=crop',
-    title: 'Backstage Elegance',
-    category: 'Runway Showcase',
-    location: 'Lagos, Nigeria',
-    span: 'col-span-1 row-span-2'
-  },
-  {
-    id: 'g2',
-    src: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2076&auto=format&fit=crop',
-    title: 'The Sacred Stitch',
-    category: 'The New Curriculum',
-    location: 'Atelier',
-    span: 'col-span-1 row-span-1'
-  },
-  {
-    id: 'g3',
-    src: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2070&auto=format&fit=crop',
-    title: 'Grit in Motion',
-    category: 'Charity Sports',
-    location: 'Lagos Stadium',
-    span: 'col-span-1 row-span-1'
-  },
-  {
-    id: 'g4',
-    src: 'https://images.unsplash.com/photo-1551232864-3f0890e580d9?q=80&w=2000&auto=format&fit=crop',
-    title: 'Collection Finale',
-    category: 'Runway Showcase',
-    location: 'Main Stage',
-    span: 'col-span-1 row-span-1'
-  },
-  {
-    id: 'g5',
-    src: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?q=80&w=2069&auto=format&fit=crop',
-    title: 'Cake Fest Conversations',
-    category: 'Private Cake Fest',
-    location: 'Victoria Island',
-    span: 'col-span-2 row-span-2'
-  },
-  {
-    id: 'g6',
-    src: 'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?q=80&w=1972&auto=format&fit=crop',
-    title: 'Textural Grace',
-    category: 'The Sacred Collection',
-    location: 'Studio',
-    span: 'col-span-1 row-span-1'
-  },
-  {
-    id: 'g7',
-    src: 'https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=2069&auto=format&fit=crop',
-    title: 'Community Spirit',
-    category: 'Charity Sports',
-    location: 'Nigeria',
-    span: 'col-span-1 row-span-2'
-  },
-  {
-    id: 'g8',
-    src: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop',
-    title: 'Modern Silhouette',
-    category: 'Bold Visionaries',
-    location: 'Street Campaign',
-    span: 'col-span-1 row-span-1'
-  },
-];
-
-const duplicatedImages = [...SHOWCASE_ITEMS, ...SHOWCASE_ITEMS];
 
 const GalleryPage = () => {
-  const [selectedItem, setSelectedItem] = useState<typeof GALLERY_ITEMS[0] | null>(null);
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [isTextureMode, setIsTextureMode] = useState(false);
+  const gallery = useGallery()
+  const showCase = useShowcase()
+
+  const isLoading = gallery.isLoading || showCase.isLoading
+  const isError = gallery.isError || showCase.isError
+
+  if(isLoading) return <Loader />
+  if(isError) return <Error404 />
+
+ const galleryProduct = gallery?.data?.images
+ const showcaseProduct = showCase?.data
 
   return (
+    
     <PageTransition>
       <div className="min-h-screen bg-[#0a0a0a] text-white">
 
@@ -122,7 +68,7 @@ const GalleryPage = () => {
         {/* --- MASONRY GRID --- */}
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 pb-32">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-[300px] md:auto-rows-[450px] gap-6 md:gap-10">
-            {GALLERY_ITEMS.map((item, index) => (
+            {galleryProduct.map((item: any, index: number) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, y: 40 }}
@@ -132,7 +78,7 @@ const GalleryPage = () => {
                 className={`${item.span} relative group`}
               >
                 <GalleryItem
-                  layoutId={item.id}
+                  layoutId={item._id}
                   image={item.src}
                   title={item.title}
                   category={item.category}
@@ -170,20 +116,20 @@ const GalleryPage = () => {
             }}
             className="flex gap-4 pl-6 w-max"
           >
-            {duplicatedImages.map((item, i) => (
+            {showcaseProduct.map((item: any, i: number) => (
               <div
-                key={`${item.id}-${i}`}
+                key={item._id}
                 // Reduced width and height (aspect-video changed to a tighter custom height)
                 className="w-[60vw] md:w-[450px] h-[250px] md:h-[300px] relative overflow-hidden group"
               >
                 <img
                   src={item.src}
-                  alt={item.name}
+                  alt={item.title}
                   className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105 cursor-pointer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6 pointer-events-none">
                   <span className="text-[9px] uppercase tracking-[0.4em] font-medium text-white/80">
-                    {item.name} // {item.date}
+                   // {item.title} //
                   </span>
                 </div>
               </div>

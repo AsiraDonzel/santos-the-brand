@@ -3,6 +3,9 @@ import ProductCard from '../components/ProductCard';
 import { PRODUCTS, CATEGORIES } from '../constants';
 import { Product, SortOption } from '../types';
 import { Filter, ChevronDown } from 'lucide-react';
+import { useProducts } from '@/hooks/storeHooks';
+import Loader from '@/components/Loader';
+import Error404 from './Error404';
 
 interface ShopProps {
   onAddToCart: (product: Product) => void;
@@ -13,35 +16,49 @@ interface ShopProps {
 const Shop: React.FC<ShopProps> = ({ onAddToCart, wishlistIds, onToggleWishlist }) => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState<SortOption>('featured');
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 2000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+  const products = useProducts()
 
-  const filteredProducts = useMemo(() => {
-    let result = [...PRODUCTS];
+    const filteredProducts = useMemo(() => {
 
-    if (selectedCategory !== "All") {
-      result = result.filter(p => p.category === selectedCategory);
-    }
+      if (!products.data) return [];
+    
+      let result = [...products.data];
 
-    result = result.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
+      if (selectedCategory !== "All") {
+        result = result.filter((p) => p.category === selectedCategory);
+      }
 
-    switch (sortBy) {
-      case 'price-asc':
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-desc':
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case 'newest':
-        // Mock sorting by new
-        result.sort((a, b) => (a.isNew === b.isNew ? 0 : a.isNew ? -1 : 1));
-        break;
-      default:
-        break;
-    }
+      result = result.filter(
+        (p) => p.basePrice >= priceRange[0] && p.basePrice <= priceRange[1],
+      );
 
-    return result;
-  }, [selectedCategory, sortBy, priceRange]);
+      switch (sortBy) {
+        case "price-asc":
+          result.sort((a, b) => a.basePrice - b.basePrice);
+          break;
+        case "price-desc":
+          result.sort((a, b) => b.basePrice - a.basePrice);
+          break;
+        case "newest":
+          // Mock sorting by new
+          result.sort((a, b) => (a.isNew === b.isNew ? 0 : a.isNew ? -1 : 1));
+          break;
+        default:
+          break;
+      }
+
+      return result;
+    }, [selectedCategory, sortBy, priceRange]);
+
+  if(products.isLoading) return <Loader />
+  if(products.isError) return <Error404 />
+
+  // console.log(products.data);
+  
+
+
 
   return (
     <div className="bg-white min-h-screen">
@@ -78,13 +95,13 @@ const Shop: React.FC<ShopProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
                 <input 
                   type="range" 
                   min="0" 
-                  max="2000" 
+                  max="100000" 
                   value={priceRange[1]} 
                   onChange={(e) => setPriceRange([0, parseInt(e.target.value)])}
                   className="w-full h-2 bg-primary-100 rounded-lg appearance-none cursor-pointer accent-primary-600"
                 />
                 <div className="flex justify-between text-sm text-slate-500 mt-2">
-                  <span>$0</span>
+                  <span>₦0</span>
                   <span>${priceRange[1].toLocaleString()}</span>
                 </div>
               </div>
@@ -125,10 +142,10 @@ const Shop: React.FC<ShopProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
                 {filteredProducts.map(product => (
                   <ProductCard 
-                    key={product.id} 
+                    key={product._id} 
                     product={product} 
                     onAddToCart={onAddToCart}
-                    isWishlisted={wishlistIds.includes(product.id)}
+                    isWishlisted={wishlistIds.includes(product._id)}
                     onToggleWishlist={onToggleWishlist}
                   />
                 ))}
@@ -137,7 +154,7 @@ const Shop: React.FC<ShopProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
               <div className="text-center py-20">
                 <p className="text-lg text-slate-500">No products found matching your criteria.</p>
                 <button 
-                  onClick={() => { setSelectedCategory("All"); setPriceRange([0, 2000]); }}
+                  onClick={() => { setSelectedCategory("All"); setPriceRange([0, 100000]); }}
                   className="mt-4 text-primary-600 underline hover:text-primary-800"
                 >
                   Clear all filters

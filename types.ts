@@ -8,6 +8,7 @@ export interface ProductVariation {
 }
 
 export interface Product {
+  _id: string;
   id: string;
   name: string; // legacy mapping
   title?: string;
@@ -80,16 +81,17 @@ export interface Review {
 
 // Renamed from JournalEntry to EventEntry
 export interface EventEntry {
+  _id: string;
   id: string;
   title: string;
-  subtitle: string;
+  content: string;
   image: string;
   date: string;
   category: string;
   location?: string; // Added location field for events
 }
 
-export type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'newest';
+export type SortOption = "featured" | "price-asc" | "price-desc" | "newest";
 
 export interface FilterState {
   category: string;
@@ -99,13 +101,21 @@ export interface FilterState {
 }
 
 export interface GalleryImage {
+  _id: any;
   id: string; // mapped from _id
   title: string;
   src: string; // url of image
   category?: string;
   location?: string;
   description?: string;
-  span?: 'col-span-1' | 'col-span-2' | 'row-span-1' | 'row-span-2' | 'col-span-1 row-span-2' | 'col-span-2 row-span-1' | 'col-span-2 row-span-2';
+  span?:
+    | "col-span-1"
+    | "col-span-2"
+    | "row-span-1"
+    | "row-span-2"
+    | "col-span-1 row-span-2"
+    | "col-span-2 row-span-1"
+    | "col-span-2 row-span-2";
   order?: number;
   isActive?: boolean;
   tags?: string[];
@@ -118,42 +128,94 @@ export interface GalleryImage {
 }
 
 export interface ShowcaseItem {
-  id: string;
+  _id: string;
   src: string;
-  name: string;
+  title: string;
   date: string;
 }
 
 export interface OrderItem {
   productId: string;
-  name: string;
+  title: string;
+  name?: string; // legacy compat
   price: number;
   quantity: number;
-  image: string;
-  variation?: string;
+  image?: string;
+  variation?: {
+    color?: string;
+    size?: string;
+    sku?: string;
+  };
 }
 
 export interface Order {
-  id: string;
-  customer: string;
-  email: string;
-  phone?: string;
-  total: number;
-  subtotal: number;
-  shipping: number;
-  tax: number;
-  status: 'Pending' | 'Completed' | 'Cancelled';
-  deliveryStatus: 'Pending' | 'Packaged' | 'Sent Out' | 'Delivered' | 'Received';
-  date: string;
-  shippingAddress: string;
-  trackingNumber?: string;
+  _id: string;
+  id?: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  shippingAddress: {
+    street: string;
+    city: string;
+    state: string;
+  };
   items: OrderItem[];
+  totalAmount: number;
+  orderNumber: string;
+  promoCode?: {
+    code: string;
+    discountAmount: number;
+  };
+  paymentMethod: "paystack" | "delivery";
+  paymentStatus: "pending" | "completed" | "failed" | "refunded";
+  orderStatus: "processing" | "shipped" | "delivered" | "cancelled";
+  paystackReference?: string;
+  statusHistory?: {
+    status: string;
+    changedAt: string;
+    changedBy: string;
+    notes?: string;
+  }[];
+  notes?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  // legacy compat
+  customer?: string;
+  email?: string;
+  phone?: string;
+  total?: number;
+  subtotal?: number;
+  shipping?: number;
+  tax?: number;
+  status?: string;
+  deliveryStatus?: string;
+  date?: string;
+  trackingNumber?: string;
 }
 
 export interface PromoCode {
-  id: string;
+  _id: string;
+  id?: string;
   code: string;
-  discountPercentage: number;
+  description?: string;
+  discountType: "percentage" | "fixed" | "free_shipping";
+  discountValue: number;
+  minPurchaseAmount?: number;
+  maxDiscountAmount?: number;
+  startDate?: string;
+  endDate?: string;
+  usageLimit?: number;
+  usedCount?: number;
+  perUserLimit?: number;
   isActive: boolean;
+  applicableCategories?: string[];
+  excludedCategories?: string[];
+  applicableProducts?: string[];
+  excludedProducts?: string[];
+  customerEmail?: string;
+  isSingleUse?: boolean;
+  createdBy?: string;
+  // legacy compat
+  discountPercentage?: number;
   usageCount?: number;
 }
