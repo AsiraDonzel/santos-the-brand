@@ -429,11 +429,100 @@ const ProductModal: React.FC<ProductModalProps> = ({
               </div>
 
               {formData.hasVariations && (
-                <div className="bg-slate-50 p-4 rounded-sm border border-slate-200 mt-4">
-                  <p className="text-xs text-slate-500 italic mb-2">
-                    Variation builder is active. Add specific color/size
-                    variations in the extended builder.
-                  </p>
+                <div className="bg-slate-50 p-4 rounded-sm border border-slate-200 mt-4 space-y-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <div>
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-primary-900">Variations</h4>
+                      <p className="text-[10px] text-slate-500 italic mt-1">
+                        Override stock, price, color and size for specific combinations.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newVariation = { color: { name: "" }, size: "", stock: 0, price: formData.basePrice || formData.price || 0, isActive: true };
+                        setFormData({ ...formData, variations: [...(formData.variations || []), newVariation] });
+                      }}
+                      className="text-xs font-bold text-primary-600 hover:text-primary-800 uppercase tracking-widest px-3 py-1.5 border border-primary-200 rounded-sm bg-white"
+                    >
+                      + Add Variation
+                    </button>
+                  </div>
+                  {(formData.variations || []).map((variation: any, idx: number) => (
+                    <div key={idx} className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 border border-slate-100 relative group rounded-sm shadow-sm">
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Color Variant</label>
+                        <input
+                          type="text"
+                          className="w-full border-b-2 border-slate-100 py-1.5 outline-none focus:border-primary-500 text-sm bg-transparent"
+                          value={variation.color?.name || ""}
+                          placeholder="e.g. Onyx Black"
+                          onChange={(e) => {
+                            const updated = [...formData.variations];
+                            updated[idx].color = { ...updated[idx].color, name: e.target.value };
+                            setFormData({ ...formData, variations: updated });
+                          }}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Size</label>
+                        <input
+                          type="text"
+                          className="w-full border-b-2 border-slate-100 py-1.5 outline-none focus:border-primary-500 text-sm bg-transparent"
+                          value={variation.size || ""}
+                          placeholder="e.g. XL"
+                          onChange={(e) => {
+                            const updated = [...formData.variations];
+                            updated[idx].size = e.target.value;
+                            setFormData({ ...formData, variations: updated });
+                          }}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Override Stock</label>
+                        <input
+                          type="number"
+                          className="w-full border-b-2 border-slate-100 py-1.5 outline-none focus:border-primary-500 text-sm bg-transparent"
+                          value={variation.stock || 0}
+                          onChange={(e) => {
+                            const updated = [...formData.variations];
+                            updated[idx].stock = Number(e.target.value);
+                            setFormData({ ...formData, variations: updated });
+                          }}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Override Price (₦)</label>
+                        <input
+                          type="number"
+                          className="w-full border-b-2 border-slate-100 py-1.5 outline-none focus:border-primary-500 text-sm bg-transparent"
+                          value={variation.price || 0}
+                          onChange={(e) => {
+                            const updated = [...formData.variations];
+                            updated[idx].price = Number(e.target.value);
+                            setFormData({ ...formData, variations: updated });
+                          }}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const updated = [...formData.variations];
+                          updated.splice(idx, 1);
+                          setFormData({ ...formData, variations: updated });
+                        }}
+                        className="text-red-500 hover:bg-red-50 p-1.5 rounded-full absolute -top-3 -right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-white border border-red-100 shadow-md"
+                        title="Remove Variation"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                  {(!formData.variations || formData.variations.length === 0) && (
+                    <div className="text-center py-6 bg-white border border-slate-100 border-dashed rounded-sm">
+                      <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">No variations added</p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

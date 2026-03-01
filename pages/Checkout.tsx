@@ -12,14 +12,14 @@ import {
   Plus,
   ChevronLeft,
   MapPin,
+  Trash2
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCreateOrder } from "@/hooks/orderHooks";
-import { title } from "process";
-
 interface CheckoutProps {
   cart: CartItem[];
   clearCart: () => void;
+  removeFromCart: (product: any, size: string, color: string) => void;
 }
 
 interface Address {
@@ -39,7 +39,7 @@ const steps = [
   { id: 4, label: "Complete" },
 ];
 
-const Checkout: React.FC<CheckoutProps> = ({ cart, clearCart }) => {
+const Checkout: React.FC<CheckoutProps> = ({ cart, clearCart, removeFromCart }) => {
   const createOrder = useCreateOrder();
   const navigate = useNavigate();
   // 1 = Cart Review, 2 = Delivery, 3 = Payment (Order Review included before payment or together)
@@ -174,19 +174,19 @@ const Checkout: React.FC<CheckoutProps> = ({ cart, clearCart }) => {
           size: item.selectedSize || "",
         },
       }));
-let  shippingAddress = {
- street: "",
- city: "",
- state: "",
-}
-      if(deliveryMethod === "pickup") {
+      let shippingAddress = {
+        street: "",
+        city: "",
+        state: "",
+      }
+      if (deliveryMethod === "pickup") {
         shippingAddress = {
           street: "Afe Babalola University, Ado-Ekiti",
           city: "Ado-Ekiti",
           state: "Ekiti",
         }
-        
-      } else if(deliveryMethod === "delivery") {
+
+      } else if (deliveryMethod === "delivery") {
         const address = addresses.find((address) => address.id === selectedAddressId);
         shippingAddress = {
           street: address?.address || "",
@@ -205,7 +205,7 @@ let  shippingAddress = {
         promoCode: promoCode || "",
       };
 
-      
+
 
       try {
         const response = await createOrder.mutateAsync(orderData);
@@ -263,7 +263,7 @@ let  shippingAddress = {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-28 lg:pt-36 pb-12">
+    <div className="min-h-screen bg-gray-50 pt-28 lg:pt-36 pb-12 overflow-x-hidden w-full">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Progress Bar (Matching Reference) */}
         <div className="flex justify-center mb-12">
@@ -272,13 +272,12 @@ let  shippingAddress = {
               <React.Fragment key={step.id}>
                 <div className="flex flex-col items-center relative">
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
-                      step.id < currentStep
-                        ? "bg-green-500 text-white"
-                        : step.id === currentStep
-                          ? "bg-primary-900 text-white"
-                          : "bg-gray-200 text-gray-400"
-                    }`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${step.id < currentStep
+                      ? "bg-green-500 text-white"
+                      : step.id === currentStep
+                        ? "bg-primary-900 text-white"
+                        : "bg-gray-200 text-gray-400"
+                      }`}
                   >
                     {step.id < currentStep ? (
                       <CheckCircle className="w-5 h-5" />
@@ -287,20 +286,18 @@ let  shippingAddress = {
                     )}
                   </div>
                   <span
-                    className={`absolute -bottom-6 text-[10px] w-24 text-center uppercase tracking-widest font-bold ${
-                      step.id <= currentStep
-                        ? "text-primary-950"
-                        : "text-gray-400"
-                    }`}
+                    className={`absolute -bottom-6 text-[10px] w-24 text-center uppercase tracking-widest font-bold ${step.id <= currentStep
+                      ? "text-primary-950"
+                      : "text-gray-400"
+                      }`}
                   >
                     {step.label}
                   </span>
                 </div>
                 {idx < steps.length - 1 && (
                   <div
-                    className={`flex-grow h-[2px] mx-4 transition-colors ${
-                      step.id < currentStep ? "bg-green-500" : "bg-gray-200"
-                    }`}
+                    className={`flex-grow h-[2px] mx-4 transition-colors ${step.id < currentStep ? "bg-green-500" : "bg-gray-200"
+                      }`}
                   />
                 )}
               </React.Fragment>
@@ -345,55 +342,62 @@ let  shippingAddress = {
                     </div>
                   ) : (
                     <div className="divide-y divide-gray-100">
-                      {cart.map(
-                        (item, i) => (
-                          (
-                            <div
-                              key={`${item._id}-${i}`}
-                              className="py-4 flex gap-6 items-center"
-                            >
-                              <div className="w-16 h-20 bg-gray-100 rounded-sm overflow-hidden flex-shrink-0">
-                                <img
-                                  src={item.images[0]}
-                                  alt={item.title}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
-                              <div className="flex-grow">
-                                <h4 className="font-serif font-bold text-primary-950">
-                                  {item.title}
-                                </h4>
-                                <div className="flex gap-8 mt-2">
-                                  <div>
-                                    <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
-                                      Quantity
-                                    </p>
-                                    <p className="text-sm font-medium text-slate-700">
-                                      {item.quantity}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
-                                      Size
-                                    </p>
-                                    <p className="text-sm font-medium text-slate-700 uppercase">
-                                      {item.selectedSize || "-"}
-                                    </p>
-                                  </div>
+                      {cart.map((item, i) => (
+                        <div
+                          key={`${item._id}-${i}`}
+                          className="py-4 flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center relative"
+                        >
+                          <div className="flex gap-4 sm:gap-6 items-center w-full sm:w-auto flex-grow">
+                            <div className="w-16 h-20 bg-gray-100 rounded-sm overflow-hidden flex-shrink-0">
+                              <img
+                                src={item.images[0]}
+                                alt={item.title}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <div className="flex-grow min-w-0">
+                              <h4 className="font-serif font-bold text-primary-950 truncate">
+                                {item.title}
+                              </h4>
+                              <div className="flex gap-8 mt-2">
+                                <div>
+                                  <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
+                                    Quantity
+                                  </p>
+                                  <p className="text-sm font-medium text-slate-700">
+                                    {item.quantity}
+                                  </p>
+                                </div>
+                                <div>
+                                  <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
+                                    Size
+                                  </p>
+                                  <p className="text-sm font-medium text-slate-700 uppercase">
+                                    {item.selectedSize || "-"}
+                                  </p>
                                 </div>
                               </div>
-                              <div className="text-right">
-                                <p className="font-bold text-primary-950">
-                                  ${item.price.toLocaleString()}
-                                </p>
-                                <p className="text-xs text-slate-400 line-through mt-1">
-                                  ${(item.price * 1.2).toLocaleString()}
-                                </p>
-                              </div>
                             </div>
-                          )
-                        ),
-                      )}
+                          </div>
+                          <div className="text-right flex sm:flex-col items-end justify-between sm:h-full w-full sm:w-auto absolute sm:relative top-4 right-0 sm:top-auto sm:right-auto">
+                            <div>
+                              <p className="font-bold text-primary-950">
+                                ₦{item.price.toLocaleString()}
+                              </p>
+                              <p className="text-xs text-slate-400 line-through mt-1">
+                                ₦{(item.price * 1.2).toLocaleString()}
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => removeFromCart(item, item.selectedSize, item.selectedColor)}
+                              className="text-slate-300 hover:text-red-500 transition-colors mt-4 p-1 rounded-full hover:bg-red-50"
+                              title="Remove item"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   )}
 
@@ -541,7 +545,7 @@ let  shippingAddress = {
                               Afe Babalola University
                             </span>
                             <span className="font-bold text-primary-600 text-sm">
-                              $10.00
+                              ₦10.00
                             </span>
                           </div>
                           <p className="text-xs text-slate-500 mt-2 flex items-start gap-1">
@@ -669,7 +673,7 @@ let  shippingAddress = {
                               }
                               className="p-3 border border-gray-200 rounded-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 w-full outline-none text-sm transition-colors"
                             />
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                               <input
                                 type="text"
                                 placeholder="State / Province"
@@ -698,7 +702,7 @@ let  shippingAddress = {
                               }
                               className="p-3 border border-gray-200 rounded-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 w-full outline-none text-sm transition-colors"
                             />
-                            <div className="flex gap-4 pt-2">
+                            <div className="flex flex-col sm:flex-row gap-4 pt-2">
                               <button
                                 onClick={handleAddAddress}
                                 className="bg-primary-950 text-white px-6 py-3 text-xs font-bold uppercase tracking-widest rounded-sm hover:bg-primary-800 transition-colors flex-grow"
@@ -720,7 +724,7 @@ let  shippingAddress = {
                     </div>
                   )}
 
-                  <div className="mt-8 flex gap-4">
+                  <div className="mt-8 flex flex-col-reverse sm:flex-row gap-4">
                     <button
                       onClick={handleBack}
                       className="px-6 py-4 border border-gray-200 text-slate-600 font-bold text-xs uppercase tracking-widest rounded-sm hover:bg-gray-50 transition-colors flex items-center gap-2"
@@ -770,44 +774,46 @@ let  shippingAddress = {
                     {cart.map((item, i) => (
                       <div
                         key={`${item.id}-${i}`}
-                        className="py-4 flex gap-6 items-center"
+                        className="py-4 flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center relative"
                       >
-                        <div className="w-16 h-20 bg-gray-100 rounded-sm overflow-hidden flex-shrink-0">
-                          <img
-                            src={item.images[0]}
-                            alt={item.title}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div className="flex-grow">
-                          <h4 className="font-serif font-bold text-primary-950">
-                            {item.title}
-                          </h4>
-                          <div className="flex gap-8 mt-2">
-                            <div>
-                              <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
-                                Quantity
-                              </p>
-                              <p className="text-sm font-medium text-slate-700">
-                                {item.quantity}
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
-                                Size
-                              </p>
-                              <p className="text-sm font-medium text-slate-700 uppercase">
-                                {item.selectedSize || "-"}
-                              </p>
+                        <div className="flex gap-4 sm:gap-6 items-center w-full sm:w-auto flex-grow">
+                          <div className="w-16 h-20 bg-gray-100 rounded-sm overflow-hidden flex-shrink-0">
+                            <img
+                              src={item.images[0]}
+                              alt={item.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="flex-grow min-w-0">
+                            <h4 className="font-serif font-bold text-primary-950 truncate">
+                              {item.title}
+                            </h4>
+                            <div className="flex gap-8 mt-2">
+                              <div>
+                                <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
+                                  Quantity
+                                </p>
+                                <p className="text-sm font-medium text-slate-700">
+                                  {item.quantity}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
+                                  Size
+                                </p>
+                                <p className="text-sm font-medium text-slate-700 uppercase">
+                                  {item.selectedSize || "-"}
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
-                        <div className="text-right">
+                        <div className="text-left sm:text-right mt-2 sm:mt-0 w-full sm:w-auto border-t border-gray-50 pt-2 sm:border-0 sm:pt-0 flex justify-between sm:block">
                           <p className="font-bold text-primary-950">
-                            ${item.price.toLocaleString()}
+                            ₦{item.price.toLocaleString()}
                           </p>
                           <p className="text-xs text-slate-400 line-through mt-1">
-                            ${(item.price * 1.2).toLocaleString()}
+                            ₦{(item.price * 1.2).toLocaleString()}
                           </p>
                         </div>
                       </div>
@@ -890,7 +896,7 @@ let  shippingAddress = {
                     </button> */}
                   </div>
 
-                  <div className="mt-8 flex gap-4">
+                  <div className="mt-8 flex flex-col-reverse sm:flex-row gap-4">
                     <button
                       onClick={handleBack}
                       disabled={isProcessing}
@@ -905,7 +911,7 @@ let  shippingAddress = {
                     >
                       {isProcessing
                         ? "Processing Transaction..."
-                        : `Pay $${total.toLocaleString()}`}
+                        : `Pay ₦${total.toLocaleString()}`}
                     </button>
                   </div>
                 </div>
@@ -934,7 +940,7 @@ let  shippingAddress = {
                 <div className="flex justify-between text-slate-600">
                   <span>Subtotal</span>
                   <span className="font-medium text-slate-900">
-                    ${subtotal.toLocaleString()}
+                    ₦{subtotal.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex justify-between text-slate-600">
@@ -949,12 +955,12 @@ let  shippingAddress = {
                   <span className="font-medium text-slate-900">
                     {shippingCost === 0
                       ? "-"
-                      : `$${shippingCost.toLocaleString()}`}
+                      : `₦${shippingCost.toLocaleString()}`}
                   </span>
                 </div>
                 <div className="flex justify-between text-primary-950 font-bold text-xl pt-4 border-t border-gray-100 mt-2">
                   <span>Total</span>
-                  <span>${total.toLocaleString()}</span>
+                  <span>₦{total.toLocaleString()}</span>
                 </div>
               </div>
 
@@ -969,7 +975,7 @@ let  shippingAddress = {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

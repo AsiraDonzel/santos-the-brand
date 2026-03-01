@@ -46,6 +46,7 @@ interface AnimatedRoutesProps {
     color?: string,
   ) => void;
   handleClearCart: () => void;
+  handleRemoveFromCart: (product: Product, size: string, color: string) => void;
   cart: CartItem[];
   wishlistIds: string[];
   handleToggleWishlist: (product: Product) => void;
@@ -64,6 +65,7 @@ function AnimatedRoutes({
   handleLogout,
   handleAddToCart,
   handleClearCart,
+  handleRemoveFromCart,
   cart,
   wishlistIds,
   handleToggleWishlist,
@@ -149,7 +151,7 @@ function AnimatedRoutes({
           />
           <Route
             path="/checkout"
-            element={<Checkout cart={cart} clearCart={handleClearCart} />}
+            element={<Checkout cart={cart} clearCart={handleClearCart} removeFromCart={handleRemoveFromCart} />}
           />
           <Route
             path="/dashboard"
@@ -183,7 +185,10 @@ function AnimatedRoutes({
 }
 
 function App() {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    const saved = localStorage.getItem("santos_cart");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [user, setUser] = useState<User | null>(null);
 
   // Check localStorage for a valid admin token on initial load
@@ -203,6 +208,10 @@ function App() {
   useEffect(() => {
     localStorage.setItem("santos_wishlist", JSON.stringify(wishlistIds));
   }, [wishlistIds]);
+
+  useEffect(() => {
+    localStorage.setItem("santos_cart", JSON.stringify(cart));
+  }, [cart]);
 
   const handleToggleWishlist = (product: Product) => {
     const pid = getProductId(product);
@@ -276,6 +285,15 @@ function App() {
     });
   };
 
+  const handleRemoveFromCart = (product: Product, size: string, color: string) => {
+    const pid = getProductId(product);
+    setCart((prev) =>
+      prev.filter(
+        (item) => !(getProductId(item) === pid && item.selectedSize === size && item.selectedColor === color)
+      )
+    );
+  };
+
   const handleClearCart = () => setCart([]);
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -288,6 +306,7 @@ function App() {
         handleLogout={handleLogout}
         handleAddToCart={handleAddToCart}
         handleClearCart={handleClearCart}
+        handleRemoveFromCart={handleRemoveFromCart}
         cart={cart}
         wishlistIds={wishlistIds}
         handleToggleWishlist={handleToggleWishlist}

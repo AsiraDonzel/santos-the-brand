@@ -113,7 +113,7 @@ const Layout: React.FC<LayoutProps> = ({
             : 'bg-transparent py-4 border-b border-transparent'
             }`}
         >
-          <div className="max-w-[1440px] mx-auto px-6 lg:px-12 grid grid-cols-3 items-center">
+          <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex justify-between lg:grid lg:grid-cols-3 items-center">
 
             {/* Left: Brand / Mobile Menu */}
             <div className="flex items-center justify-start">

@@ -62,8 +62,8 @@ const ImageUploadZone: React.FC<ImageUploadZoneProps> = ({
         preview: URL.createObjectURL(file),
       }));
 
-      // Show local preview for single-upload zones
-      if (!multiple && newImages.length > 0) {
+      // Show local preview for all zones
+      if (newImages.length > 0) {
         setLocalPreview(newImages[0].preview);
       }
 
@@ -121,7 +121,7 @@ const ImageUploadZone: React.FC<ImageUploadZoneProps> = ({
               onClick={(e) => e.stopPropagation()}
             >
               <span className="text-xs font-bold uppercase tracking-widest">
-                {displayValue ? "Change Image" : "Upload a file"}
+                {displayValue ? (multiple ? "Add more / Change" : "Change Image") : "Upload a file"}
               </span>
               <input
                 id={`file-upload-${label}`}
