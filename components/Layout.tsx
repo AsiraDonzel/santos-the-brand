@@ -6,6 +6,7 @@ import SearchOverlay from './SearchOverlay';
 import RecentHistoryBar from './RecentHistoryBar';
 import { User, Product } from '../types';
 import ReviewOverlay from './ReviewOverlay';
+import { useSubscribe } from '@/hooks/storeHooks';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -25,6 +26,7 @@ interface NavLinkProps {
 
 const NavLink: React.FC<NavLinkProps> = ({ to, children }) => {
   const location = useLocation();
+
   const isGallery = location.pathname === '/gallery';
   return (
     <Link to={to} className={`text-sm font-medium ${isGallery ? 'text-primary-500 hover:text-white' : 'text-slate-800 hover:text-primary-600'} tracking-widest uppercase transition-colors relative group`}>
@@ -76,10 +78,23 @@ const Layout: React.FC<LayoutProps> = ({
   onDismissHistory,
   showHistory = false
 }) => {
+    const subscribe = useSubscribe();
+
+    const handleSubscribe = async (email: string) => {
+      try {
+        await subscribe.mutateAsync(email);
+        alert("Subscribed successfully");
+      } catch (error) {
+        alert("Failed to subscribe");
+      }
+    };
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isReviewOverlayOpen, setIsReviewOverlayOpen] = useState(false);
+  const [FormData, setFormData] = useState({
+    email: "",
+  });
   const location = useLocation();
   const isGallery = location.pathname === '/gallery';
   const isAdminRoute = location.pathname.startsWith('/admin');
@@ -266,9 +281,11 @@ const Layout: React.FC<LayoutProps> = ({
                 <input
                   type="email"
                   placeholder="EMAIL ADDRESS"
+                  value={FormData.email}
+                  onChange={(e) => setFormData({ ...FormData, email: e.target.value })}
                   className="bg-transparent border-none outline-none text-sm w-full placeholder:text-slate-300 text-primary-950 z-10"
                 />
-                <button className="text-xs font-bold uppercase tracking-widest text-primary-600 hover:text-primary-800 transition-colors z-10">
+                <button onClick={() => handleSubscribe(FormData.email)} className="text-xs font-bold uppercase tracking-widest text-primary-600 hover:text-primary-800 transition-colors z-10">
                   Join
                 </button>
                 <div className="absolute bottom-0 left-0 w-full h-[2px] bg-primary-600 scale-x-0 group-focus-within:scale-x-100 transition-transform duration-500 ease-luxury origin-left" />

@@ -1,23 +1,25 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, ArrowRight, Loader } from "lucide-react";
+import { useSubscribe } from "@/hooks/storeHooks";
 
 const WebsiteLock = () => {
+  const subscribe = useSubscribe();
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
 
-    setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsSubmitted(true);
-      setEmail("");
-    }, 1500);
+    try {
+      await subscribe.mutateAsync(email);
+      alert("Subscribed successfully");
+    } catch (error) {
+      alert("Failed to subscribe");
+    }
   };
 
   return (
@@ -72,7 +74,7 @@ const WebsiteLock = () => {
           className="pt-8 w-full"
         >
           <AnimatePresence mode="wait">
-            {!isSubmitted ? (
+            {!subscribe.isSuccess ? (
               <motion.form
                 key="form"
                 initial={{ opacity: 0 }}
@@ -95,16 +97,16 @@ const WebsiteLock = () => {
 
                 <button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={subscribe.isPending}
                   className="mt-6 group relative mx-auto inline-flex items-center gap-3 px-8 py-3 bg-white text-primary-950 text-xs font-bold uppercase tracking-[0.2em] overflow-hidden transition-all hover:bg-primary-100 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   <span className="relative z-10 flex items-center gap-2">
-                    {isLoading ? "Processing..." : "Notify Me"}
-                    {!isLoading && (
+                    {subscribe.isPending ? "Processing..." : "Notify Me"}
+                    {!subscribe.isPending && (
                       <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                     )}
                   </span>
-                  {isLoading && (
+                  {subscribe.isPending && (
                     <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-20">
                       <Loader className="w-4 h-4 animate-spin text-primary-950" />
                     </div>

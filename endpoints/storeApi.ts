@@ -114,38 +114,6 @@ const StoreAPI = {
       console.error("An error occured", error);
     }
   },
-  getCategories: async () => {
-    try {
-      const response = await axios.get("/categories");
-      return response.data;
-    } catch (error) {
-      console.error("An error occured", error);
-    }
-  },
-  getCategory: async (categoryId: string) => {
-    try {
-      const response = await axios.get(`/categories/${categoryId}`);
-      return response.data;
-    } catch (error) {
-      console.error("An error occured", error);
-    }
-  },
-  getTags: async () => {
-    try {
-      const response = await axios.get("/tags");
-      return response.data;
-    } catch (error) {
-      console.error("An error occured", error);
-    }
-  },
-  getTag: async (tagId: string) => {
-    try {
-      const response = await axios.get(`/tags/${tagId}`);
-      return response.data;
-    } catch (error) {
-      console.error("An error occured", error);
-    }
-  },
   getImages: async () => {
     try {
       const response = await axios.get("/images");
@@ -185,7 +153,7 @@ const StoreAPI = {
   subscribeToNewsletter: async (email: string) => {
     try {
       const response = await axios.post("/newsletter/subscribe", { email });
-      return response.data;
+      return response.data.data;
     } catch (error) {
       console.error("An error occured", error);
     }
@@ -196,6 +164,50 @@ const StoreAPI = {
       return response.data.data;
     } catch (error) {
       console.error("An error occured", error);
+    }
+  },
+  getOrdersByEmail: async (email: string) => {
+    try {
+      const response = await axios.get(
+        `/order/?email=${encodeURIComponent(email)}`,
+      );
+      return response.data;
+    } catch (error) {
+      console.error("An error occurred fetching orders by email:", error);
+      throw error;
+    }
+  },
+  getOrderDetails: async (identifier: string, email: string) => {
+    try {
+      const response = await axios.get(
+        `/order/${identifier}?email=${encodeURIComponent(email)}`,
+      );
+      return response.data;
+    } catch (error) {
+      console.error("An error occurred fetching order details:", error);
+      throw error;
+    }
+  },
+  submitProductReview: async (
+    productId: string,
+    reviewData: {
+      customerName: string;
+      rating: number;
+      comment: string;
+    },
+  ) => {
+    try {
+      const response = await axios.post(
+        `/review/products/${productId}/reviews`,
+        reviewData,
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error("An error occurred submitting product review:", error);
+      if (error.response?.data?.message) {
+        throw new Error(error.response.data.message);
+      }
+      throw error;
     }
   },
 };

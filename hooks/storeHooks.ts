@@ -18,16 +18,16 @@ export const useProduct = (productId: string) => {
 };
 
 export const useFeatured = () => {
-    return useQuery({
-        queryKey: ["featuredProducts"],
-        queryFn: StoreAPI.getFeaturedProducts,
-    });
+  return useQuery({
+    queryKey: ["featuredProducts"],
+    queryFn: StoreAPI.getFeaturedProducts,
+  });
 };
 export const useTrending = () => {
-    return useQuery({
-        queryKey: ["trendingProducts"],
-        queryFn:  StoreAPI.getTrendingProducts,
-    });
+  return useQuery({
+    queryKey: ["trendingProducts"],
+    queryFn: StoreAPI.getTrendingProducts,
+  });
 };
 
 export const useGallery = () => {
@@ -54,22 +54,49 @@ export const useEvents = (shouldWait: boolean = false) => {
 };
 
 export const useWebsiteStatus = () => {
-    return useQuery({
-        queryKey: ["websiteStatus"],
-        queryFn: StoreAPI.getWebsiteStatus,
-    });
+  return useQuery({
+    queryKey: ["websiteStatus"],
+    queryFn: StoreAPI.getWebsiteStatus,
+  });
 };
 
 export const useSubscribe = () => {
-    return useMutation({
-        mutationFn: StoreAPI.subscribeToNewsletter,
-    });
+  return useMutation({
+    mutationFn: (email: string) => StoreAPI.subscribeToNewsletter(email),
+  });
 };
 
 export const useFeaturedAndTrending = () => {
-    return useQuery({
-        queryKey: ["featuredAndTrendingProducts"],
-        queryFn: StoreAPI.getFeaturedAndTrendingProducts,
-    });
+  return useQuery({
+    queryKey: ["featuredAndTrendingProducts"],
+    queryFn: StoreAPI.getFeaturedAndTrendingProducts,
+  });
 };
 
+export const useOrdersByEmail = (email: string) => {
+  return useQuery({
+    queryKey: ["ordersByEmail", email],
+    queryFn: () => StoreAPI.getOrdersByEmail(email),
+    enabled: !!email,
+  });
+};
+
+export const useOrderDetails = (identifier: string, email: string) => {
+  return useQuery({
+    queryKey: ["orderDetails", identifier, email],
+    queryFn: () => StoreAPI.getOrderDetails(identifier, email),
+    enabled: !!identifier && !!email,
+  });
+};
+
+export const useSubmitProductReview = () => {
+  return useMutation({
+    mutationFn: ({
+      productId,
+      reviewData,
+    }: {
+      productId: string;
+      reviewData: { customerName: string; rating: number; comment: string };
+    }) => StoreAPI.submitProductReview(productId, reviewData),
+  });
+};
