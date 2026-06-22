@@ -16,7 +16,7 @@ const SHIPPING_FAQS = [
 ];
 
 const RETURNS_FAQS = [
-  { q: "What is your return window?", a: "Returns are accepted within 7 days of delivery. Items must be unworn, unwashed, and in their original packaging." },
+  { q: "What is your return window?", a: "Returns are accepted within 7 days of delivery. Items must be unworn, untouched and unwashed, and in their original packaging." },
   { q: "Which items are not eligible for return?", a: "We do not accept returns on final sale items, event merchandise, or custom orders." },
   { q: "How will I receive my refund?", a: "Refunds are issued to your original payment method, excluding the delivery fee." },
   { q: "Can I exchange an item?", a: "Exchanges are subject to availability. If your desired size is out of stock, you will receive store credit or a full refund." },
@@ -32,7 +32,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ question, answer }) => {
 
   return (
     <div className="border-b border-gray-100">
-      <button 
+      <button
         onClick={() => setIsOpen(!isOpen)}
         className={`w-full flex justify-between items-center py-6 text-left transition-colors ${isOpen ? 'text-primary-600' : 'text-slate-900 hover:text-primary-600'}`}
       >
@@ -49,9 +49,9 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ question, answer }) => {
             className="overflow-hidden"
           >
             <div className="pb-6 pr-6">
-               <div className="bg-primary-50 p-6 rounded-sm border-l-2 border-primary-300">
-                 <p className="text-slate-600 font-light leading-relaxed">{answer}</p>
-               </div>
+              <div className="bg-primary-50 p-6 rounded-sm border-l-2 border-primary-300">
+                <p className="text-slate-600 font-light leading-relaxed">{answer}</p>
+              </div>
             </div>
           </motion.div>
         )}
@@ -67,7 +67,7 @@ const PoliciesPage = () => {
     <PageTransition>
       <div className="bg-white min-h-screen py-24 md:py-32">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
-          
+
           <div className="text-center mb-16">
             <h1 className="font-serif text-4xl md:text-5xl text-primary-950 mb-4">Policies & Help</h1>
             <p className="text-slate-500">Everything you need to know about your SANTOS experience.</p>
@@ -85,7 +85,7 @@ const PoliciesPage = () => {
                 <tab.icon className="w-4 h-4" />
                 {tab.label}
                 {activeTab === tab.id && (
-                  <motion.div 
+                  <motion.div
                     layoutId="activeTab"
                     className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary-600"
                   />

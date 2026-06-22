@@ -28,7 +28,7 @@ const VALUES = [
   },
   {
     title: "Inclusivity & Expression",
-    description: "SANTOS is for everyone. Regardless of background or status, we believe fashion should be accessible and expressive."
+    description: "SANTOS is not for everyone. We have a culture ."
   },
   {
     title: "Creative Excellence",

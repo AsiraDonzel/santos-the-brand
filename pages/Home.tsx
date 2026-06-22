@@ -47,7 +47,7 @@ const Home: React.FC<HomeProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
             <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
               <div className="flex justify-between items-end mb-16">
                 <div>
-                  <motion.span 
+                  <motion.span
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -55,7 +55,7 @@ const Home: React.FC<HomeProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
                   >
                     Highlights
                   </motion.span>
-                  <motion.h2 
+                  <motion.h2
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -66,11 +66,11 @@ const Home: React.FC<HomeProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
                   </motion.h2>
                 </div>
                 <Link to="/shop" className="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-primary-600 transition-colors">
-                    View All <ArrowRight className="w-4 h-4" />
+                  View All <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
-              
-              <motion.div 
+
+              <motion.div
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-100px" }}
@@ -80,9 +80,9 @@ const Home: React.FC<HomeProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"
               >
                 {featuredProducts.map((product) => (
-                  <ProductCard 
-                    key={product.id} 
-                    product={product} 
+                  <ProductCard
+                    key={product.id}
+                    product={product}
                     onAddToCart={onAddToCart}
                     isWishlisted={wishlistIds.includes(product.id)}
                     onToggleWishlist={onToggleWishlist}
@@ -97,11 +97,11 @@ const Home: React.FC<HomeProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
           {/* Cinematic Quote */}
           <section className="relative py-40 bg-white overflow-hidden flex items-center justify-center">
             <div className="max-w-4xl px-6 text-center z-10">
-                <p className="text-primary-500 font-bold tracking-widest text-xs uppercase mb-8">Philosophy</p>
-                <h2 className="font-serif text-4xl md:text-6xl text-primary-950 leading-tight mb-8">
-                    "True elegance is not just about being noticed, it’s about being remembered."
-                </h2>
-                <div className="w-24 h-[1px] bg-gray-300 mx-auto" />
+              <p className="text-primary-500 font-bold tracking-widest text-xs uppercase mb-8">Philosophy</p>
+              <h2 className="font-serif text-4xl md:text-6xl text-primary-950 leading-tight mb-8">
+                "True fashion is not just about being noticed, it’s about being remembered."
+              </h2>
+              <div className="w-24 h-[1px] bg-gray-300 mx-auto" />
             </div>
           </section>
 
@@ -111,8 +111,8 @@ const Home: React.FC<HomeProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
               <div className="text-center mb-20">
                 <h2 className="font-serif text-4xl md:text-5xl text-primary-950">Trending Now</h2>
               </div>
-              
-              <motion.div 
+
+              <motion.div
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-100px" }}
@@ -122,10 +122,10 @@ const Home: React.FC<HomeProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
                 className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16"
               >
                 {trendingProducts.map((product) => (
-                  <ProductCard 
-                    key={product.id} 
-                    product={product} 
-                    onAddToCart={onAddToCart} 
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onAddToCart={onAddToCart}
                     isWishlisted={wishlistIds.includes(product.id)}
                     onToggleWishlist={onToggleWishlist}
                   />

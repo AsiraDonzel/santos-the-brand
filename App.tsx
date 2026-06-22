@@ -118,7 +118,9 @@ function AnimatedRoutes({
 function App() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [user, setUser] = useState<User | null>(null);
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(
+    () => sessionStorage.getItem('santos_admin_auth') === 'true'
+  );
   const [wishlistIds, setWishlistIds] = useState<string[]>(() => {
     const saved = localStorage.getItem('santos_wishlist');
     return saved ? JSON.parse(saved) : [];
@@ -130,6 +132,14 @@ function App() {
   useEffect(() => {
     localStorage.setItem('santos_wishlist', JSON.stringify(wishlistIds));
   }, [wishlistIds]);
+
+  useEffect(() => {
+    if (isAdminAuthenticated) {
+      sessionStorage.setItem('santos_admin_auth', 'true');
+    } else {
+      sessionStorage.removeItem('santos_admin_auth');
+    }
+  }, [isAdminAuthenticated]);
 
   const handleToggleWishlist = (product: Product) => {
     setWishlistIds(prev => 

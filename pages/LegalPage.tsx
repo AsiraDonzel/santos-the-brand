@@ -21,17 +21,17 @@ const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.6, ease: "easeOut" } 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" }
     }
   };
 
   return (
     <PageTransition>
       <div className="bg-white min-h-screen pt-32 pb-24 text-slate-900">
-        
+
         <div className="max-w-4xl mx-auto px-6">
           {/* Header Section */}
           <header className="mb-20">
@@ -43,16 +43,16 @@ const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
               <ShieldCheck className="w-5 h-5" />
               <span className="text-xs font-bold uppercase tracking-[0.3em]">SANTOS Official Archive</span>
             </motion.div>
-            
-            <motion.h1 
+
+            <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="font-serif text-5xl md:text-7xl mb-6 text-primary-950"
             >
               {isTerms ? 'Terms & Conditions' : 'Privacy Policy'}
             </motion.h1>
-            
-            <motion.p 
+
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
@@ -62,7 +62,7 @@ const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
             </motion.p>
           </header>
 
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -71,57 +71,57 @@ const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
             {isTerms ? (
               // --- Terms & Conditions Content ---
               <>
-                <LegalSection 
-                  icon={<Globe className="w-5 h-5" />} 
-                  title="01. Authenticity" 
-                  content="What you see online is exactly what you’ll receive. We capture our pieces in high-fidelity to ensure your expectations are not just met, but exceeded." 
-                  variants={itemVariants} 
+                <LegalSection
+                  icon={<Globe className="w-5 h-5" />}
+                  title="01. Authenticity"
+                  content="What you see online is exactly what you’ll receive. We capture our pieces in high-fidelity to ensure your expectations are not just met, but exceeded."
+                  variants={itemVariants}
                 />
-                <LegalSection 
-                  icon={<Lock className="w-5 h-5" />} 
-                  title="02. Intellectual Property" 
-                  content="All designs, content, and sauce belong to SANTOS. Our patterns and narratives are the result of deep cultural grit — no copying or unauthorized use allowed." 
-                  variants={itemVariants} 
+                <LegalSection
+                  icon={<Lock className="w-5 h-5" />}
+                  title="02. Intellectual Property"
+                  content="All designs, content, and sauce belong to SANTOS. Our patterns and narratives are the result of deep cultural grit — no copying or unauthorized use allowed."
+                  variants={itemVariants}
                 />
-                <LegalSection 
-                  icon={<FileText className="w-5 h-5" />} 
-                  title="03. Financials" 
-                  content="Prices are listed in Naira (₦). We facilitate seamless growth through bank transfers, cards, and trusted secure payment links." 
-                  variants={itemVariants} 
+                <LegalSection
+                  icon={<FileText className="w-5 h-5" />}
+                  title="03. Financials"
+                  content="Prices are listed in Naira (₦). We facilitate seamless growth through bank transfers, cards, and trusted secure payment links."
+                  variants={itemVariants}
                 />
-                <LegalSection 
-                  icon={<RefreshCw className="w-5 h-5" />} 
-                  title="04. Policy Evolution" 
-                  content="As we grow, our policies might evolve. Stay locked into our community channels to remain in the loop on all updates." 
-                  variants={itemVariants} 
+                <LegalSection
+                  icon={<RefreshCw className="w-5 h-5" />}
+                  title="04. Policy Evolution"
+                  content="As we grow, our policies can evolve. Stay locked into our community channels to remain in the loop on all updates."
+                  variants={itemVariants}
                 />
               </>
             ) : (
               // --- Privacy Policy Content ---
               <>
-                <LegalSection 
-                  icon={<Eye className="w-5 h-5" />} 
-                  title="Data Transparency" 
-                  content="We collect your name, shipping address, and contact info solely to move your orders fast. We don't believe in digital clutter—only what's necessary to serve you." 
-                  variants={itemVariants} 
+                <LegalSection
+                  icon={<Eye className="w-5 h-5" />}
+                  title="Data Transparency"
+                  content="We collect your name, shipping address, and contact info solely to move your orders fast. We don't believe in digital clutter—only what's necessary to serve you."
+                  variants={itemVariants}
                 />
-                <LegalSection 
-                  icon={<Lock className="w-5 h-5" />} 
-                  title="Security Protocols" 
-                  content="Your transaction details are encrypted. Whether you're paying from Lagos or abroad, your financial integrity is guarded by industry-leading security." 
-                  variants={itemVariants} 
+                <LegalSection
+                  icon={<Lock className="w-5 h-5" />}
+                  title="Security Protocols"
+                  content="Your transaction details are encrypted. Whether you're paying from home or abroad, your financial integrity is guarded by industry-leading security."
+                  variants={itemVariants}
                 />
-                <LegalSection 
-                  icon={<ShieldCheck className="w-5 h-5" />} 
-                  title="Zero Third-Party Sharing" 
-                  content="We never sell your data. Your journey with SANTOS is private. We only share info with logistics partners to ensure your gear arrives at your door." 
-                  variants={itemVariants} 
+                <LegalSection
+                  icon={<ShieldCheck className="w-5 h-5" />}
+                  title="Zero Third-Party Sharing"
+                  content="We never sell your data. Your journey with SANTOS is private. We only share info with logistics partners to ensure your gear arrives at your door."
+                  variants={itemVariants}
                 />
               </>
             )}
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             className="mt-24 pt-12 border-t border-gray-100 text-center md:text-left"

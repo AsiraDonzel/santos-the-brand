@@ -1,8 +1,39 @@
 import React, { useState } from 'react';
 import { CartItem } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, Truck, Mail, Ticket, Wallet, Package, Info, Plus, ChevronLeft, MapPin } from 'lucide-react';
+import { CheckCircle, Truck, Mail, Ticket, Wallet, Package, Info, Plus, ChevronLeft, MapPin, ShieldCheck } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+
+// Paystack brand badge component
+const PaystackBadge = ({ size = 'sm' }: { size?: 'sm' | 'md' }) => (
+  <span
+    className={`group inline-flex items-center gap-1.5 font-semibold transition-all duration-300 cursor-default select-none ${
+      size === 'md' ? 'text-xs' : 'text-[10px]'
+    }`}
+    title="Payments secured by Paystack"
+  >
+    <span className="text-slate-400 font-normal tracking-wide group-hover:text-slate-500 transition-colors">
+      Powered by
+    </span>
+    <span
+      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-transparent
+        text-slate-500 group-hover:text-[#00C3F7] group-hover:border-[#00C3F7]/30
+        group-hover:bg-[#00C3F7]/8 group-hover:shadow-[0_0_12px_rgba(0,195,247,0.25)]
+        transition-all duration-300"
+    >
+      <ShieldCheck
+        className="group-hover:text-[#00C3F7] transition-colors duration-300"
+        style={{ width: size === 'md' ? 13 : 11, height: size === 'md' ? 13 : 11 }}
+      />
+      <span
+        className="font-bold tracking-tight group-hover:text-[#00C3F7] transition-colors duration-300"
+        style={{ fontSize: size === 'md' ? 12 : 10 }}
+      >
+        Paystack
+      </span>
+    </span>
+  </span>
+);
 
 interface CheckoutProps {
   cart: CartItem[];
@@ -555,18 +586,27 @@ const Checkout: React.FC<CheckoutProps> = ({ cart, clearCart }) => {
                   <div className="space-y-4">
                     <button
                       onClick={() => setPaymentMethod('paystack')}
-                      className={`w-full p-4 border rounded-sm flex flex-col items-start gap-2 transition-all ${paymentMethod === 'paystack' ? 'border-primary-600 bg-primary-50/50' : 'border-gray-200 hover:border-primary-300'}`}
+                      className={`w-full p-4 border rounded-sm flex flex-col items-start gap-2 transition-all ${
+                        paymentMethod === 'paystack'
+                          ? 'border-[#00C3F7]/60 bg-[#00C3F7]/5 shadow-[0_0_0_1px_rgba(0,195,247,0.2)]'
+                          : 'border-gray-200 hover:border-[#00C3F7]/40 hover:bg-[#00C3F7]/3'
+                      }`}
                     >
                       <div className="flex justify-between w-full items-center">
-                        <span className="font-bold text-sm uppercase tracking-wider text-primary-950">Pay now with Paystack</span>
-                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'paystack' ? 'border-primary-600' : 'border-gray-300'}`}>
-                          {paymentMethod === 'paystack' && <div className="w-2 h-2 bg-primary-600 rounded-full" />}
+                        <div className="flex flex-col gap-1">
+                          <span className="font-bold text-sm uppercase tracking-wider text-primary-950">Pay now with Paystack</span>
+                          <PaystackBadge size="sm" />
+                        </div>
+                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ml-3 ${
+                          paymentMethod === 'paystack' ? 'border-[#00C3F7]' : 'border-gray-300'
+                        }`}>
+                          {paymentMethod === 'paystack' && <div className="w-2 h-2 bg-[#00C3F7] rounded-full" />}
                         </div>
                       </div>
                       <p className="text-xs text-slate-500 text-left">Secure payment via Card, Bank Transfer, or USSD.</p>
                       {paymentMethod === 'paystack' && (
-                        <div className="mt-3 w-full bg-blue-50 border border-blue-100 p-3 rounded-sm text-xs text-blue-800 flex items-start gap-2">
-                          <Info className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
+                        <div className="mt-3 w-full bg-[#00C3F7]/8 border border-[#00C3F7]/20 p-3 rounded-sm text-xs text-slate-700 flex items-start gap-2">
+                          <ShieldCheck className="w-4 h-4 text-[#00C3F7] flex-shrink-0 mt-0.5" />
                           <p>We do not store your card details. You will be redirected securely to Paystack to complete your transaction.</p>
                         </div>
                       )}
@@ -619,13 +659,24 @@ const Checkout: React.FC<CheckoutProps> = ({ cart, clearCart }) => {
                     >
                       <ChevronLeft className="w-4 h-4" /> Back to Delivery
                     </button>
-                    <button
-                      onClick={handleNext}
-                      disabled={isProcessing}
-                      className="flex-grow bg-[#10b981] text-white px-8 py-4 font-bold uppercase tracking-widest text-xs rounded-sm hover:bg-[#059669] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] flex justify-center items-center"
-                    >
-                      {isProcessing ? 'Processing Transaction...' : `Pay $${total.toLocaleString()}`}
-                    </button>
+                    <div className="flex-grow flex flex-col gap-2">
+                      <button
+                        onClick={handleNext}
+                        disabled={isProcessing}
+                        className={`w-full text-white px-8 py-4 font-bold uppercase tracking-widest text-xs rounded-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center ${
+                          paymentMethod === 'paystack'
+                            ? 'bg-[#00C3F7] hover:bg-[#0BA4DB] shadow-[0_4px_14px_0_rgba(0,195,247,0.4)] hover:shadow-[0_6px_20px_rgba(0,195,247,0.35)]'
+                            : 'bg-[#10b981] hover:bg-[#059669] shadow-[0_4px_14px_0_rgba(16,185,129,0.39)]'
+                        }`}
+                      >
+                        {isProcessing ? 'Processing Transaction...' : `Pay $${total.toLocaleString()}`}
+                      </button>
+                      {paymentMethod === 'paystack' && (
+                        <div className="flex justify-center">
+                          <PaystackBadge size="sm" />
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -662,6 +713,10 @@ const Checkout: React.FC<CheckoutProps> = ({ cart, clearCart }) => {
               <div className="flex items-start gap-3 text-xs text-slate-500 bg-blue-50/50 p-4 rounded-sm border border-blue-100/50">
                 <Info className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
                 <p className="leading-relaxed">All transactions are secure and encrypted. We never store your credit card details.</p>
+              </div>
+
+              <div className="mt-4 flex justify-center pt-4 border-t border-gray-100">
+                <PaystackBadge size="md" />
               </div>
             </div>
           </div>
