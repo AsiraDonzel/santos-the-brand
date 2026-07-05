@@ -31,8 +31,9 @@ const Hero = () => {
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               transition={{ delay: 0.8, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-xs md:text-sm font-bold tracking-[0.3em] uppercase text-primary-200"
+              className="text-lg md:text-2xl font-bold tracking-[0.3em] uppercase text-primary-200"
             >
+              SANTOS RULES
             </motion.p>
           </div>
 
@@ -43,7 +44,7 @@ const Hero = () => {
               transition={{ delay: 1, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
               className="font-serif text-5xl md:text-7xl lg:text-9xl font-medium tracking-tight leading-none"
             >
-              The New Standard <br /> <span className="italic font-light">of Elegance</span>
+              SWAG ACADEMY
             </motion.h1>
           </div>
 
