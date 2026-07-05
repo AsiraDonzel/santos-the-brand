@@ -8,6 +8,9 @@ import { PRODUCTS } from '../constants';
 import { Product } from '../types';
 import { ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import WebsiteLock from '@/components/WebsiteLock';
+import { useEvents, useFeatured, useFeaturedAndTrending, useGallery, useProducts, useShowcase, useTrending, useWebsiteStatus } from '@/hooks/storeHooks';
+import Error404 from './Error404';
 
 interface HomeProps {
   onAddToCart: (product: Product) => void;
@@ -16,25 +19,46 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ onAddToCart, wishlistIds, onToggleWishlist }) => {
-  const [loading, setLoading] = useState(true);
-  const featuredProducts = PRODUCTS.slice(0, 3);
-  const trendingProducts = PRODUCTS.slice(3, 6);
+  // const featuredProducts = PRODUCTS.slice(0, 3);
+  // const trendingProducts = PRODUCTS.slice(3, 6);
+  const gallery = useGallery();
+  const featuredAndTrending = useFeaturedAndTrending()
+  const websiteStatus = useWebsiteStatus()
+  const isReady = featuredAndTrending.isSuccess && gallery.isSuccess;
+  const showcase = useShowcase(isReady);
+  const events = useEvents(isReady);
+  const products = useProducts(isReady)
 
-  useEffect(() => {
-    // Simulate loading time for entrance animation
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
+    const IsLoading =
+      websiteStatus.isLoading ||
+      featuredAndTrending.isLoading ||
+      gallery.isLoading;
+    const IsError =
+      websiteStatus.error || featuredAndTrending.error || gallery.error;
+
+    if (IsLoading) {
+      return (
+        <AnimatePresence mode="wait">
+          <Loader />
+        </AnimatePresence>
+      );
+    }
+    if (IsError) {
+      return <Error404 />;
+    }
+
+    if (websiteStatus.data.isLocked) {
+      return <WebsiteLock />;
+    }
+
+    
+
 
   return (
+    
     <>
-      <AnimatePresence mode="wait">
-        {loading && <Loader />}
-      </AnimatePresence>
 
-      {!loading && (
+      {!IsLoading && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -79,10 +103,10 @@ const Home: React.FC<HomeProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
                 }}
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"
               >
-                {featuredProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
+                {featuredAndTrending.data?.featured.products.map((product: Product) => (
+                  <ProductCard 
+                    key={product._id} 
+                    product={product} 
                     onAddToCart={onAddToCart}
                     isWishlisted={wishlistIds.includes(product.id)}
                     onToggleWishlist={onToggleWishlist}
@@ -92,7 +116,7 @@ const Home: React.FC<HomeProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
             </div>
           </section>
 
-          <GalleryPreview />
+          <GalleryPreview  />
 
           {/* Cinematic Quote */}
           <section className="relative py-40 bg-white overflow-hidden flex items-center justify-center">
@@ -121,11 +145,11 @@ const Home: React.FC<HomeProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
                 }}
                 className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16"
               >
-                {trendingProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onAddToCart={onAddToCart}
+                {featuredAndTrending.data?.trending.products.map((product: Product) => (
+                  <ProductCard 
+                    key={product._id} 
+                    product={product} 
+                    onAddToCart={onAddToCart} 
                     isWishlisted={wishlistIds.includes(product.id)}
                     onToggleWishlist={onToggleWishlist}
                   />

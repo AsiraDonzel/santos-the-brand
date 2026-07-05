@@ -11,14 +11,17 @@ interface ProductCardProps {
   onToggleWishlist?: (product: Product) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ 
-  product, 
-  onAddToCart, 
-  isWishlisted = false, 
-  onToggleWishlist 
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  onAddToCart,
+  isWishlisted = false,
+  onToggleWishlist
 }) => {
+
+  // console.log(product);
+
   return (
-    <motion.div 
+    <motion.div
       variants={{
         hidden: { opacity: 0, y: 50 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
@@ -34,16 +37,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
         )}
 
         {/* Links & Images */}
-        <Link to={`/product/${product.id}`} className="block h-full w-full">
-           <img
-            src={product.image}
+        <Link to={`/product/${product._id}`} className="block h-full w-full">
+          <img
+            src={product.images[0]}
             alt={product.name}
             className="h-full w-full object-cover object-center transition-opacity duration-700 ease-in-out group-hover:opacity-0"
             loading="lazy"
           />
           <img
-            src={product.hoverImage || product.image}
-            alt={`${product.name} alternate view`}
+            src={product.hoverImage || product.images[0]}
+            alt={`${product.title} alternate view`}
             className="absolute inset-0 h-full w-full object-cover object-center opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100"
             loading="lazy"
           />
@@ -51,7 +54,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Interactive Overlay Actions */}
         <div className="absolute right-4 top-4 flex flex-col gap-2 z-20 translate-x-12 group-hover:translate-x-0 transition-transform duration-500 ease-luxury delay-75">
-          <button 
+          <button
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -85,10 +88,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       <div className="mt-6 flex flex-col items-center text-center">
         <p className="text-xs text-slate-400 uppercase tracking-widest mb-1">{product.category}</p>
-        <Link to={`/product/${product.id}`} className="group-hover:text-primary-600 transition-colors">
-          <h3 className="font-serif text-xl text-primary-950">{product.name}</h3>
+        <Link to={`/product/${product._id}`} className="group-hover:text-primary-600 transition-colors">
+          <h3 className="font-serif text-xl text-primary-950">{product.title}</h3>
         </Link>
-        <p className="mt-2 text-sm font-medium text-slate-900">${product.price.toLocaleString()}</p>
+        <p className="mt-2 text-sm font-medium text-slate-900">₦{product.basePrice.toLocaleString()}</p>
       </div>
     </motion.div>
   );

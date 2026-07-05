@@ -31,11 +31,17 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({ mainImage, images, prod
     setZoomPosition({ x, y });
   };
 
+  const allImages = React.useMemo(() => {
+    // Collect unique images from mainImage and images array
+    const imageSet = new Set([mainImage, ...images]);
+    return Array.from(imageSet).slice(0, 4);
+  }, [mainImage, images]);
+
   return (
     <>
       <div className="space-y-4">
         {/* Main Interactive Image */}
-        <div 
+        <div
           className="relative aspect-[3/4] bg-gray-100 overflow-hidden cursor-crosshair group"
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
@@ -43,9 +49,9 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({ mainImage, images, prod
           onClick={() => setIsLightboxOpen(true)}
         >
           <AnimatePresence mode="wait">
-            <motion.img 
+            <motion.img
               key={displayImage} // Triggers transition on change
-              src={displayImage} 
+              src={displayImage}
               alt={productName}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -55,23 +61,22 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({ mainImage, images, prod
               style={isHovering ? { transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%` } : undefined}
             />
           </AnimatePresence>
-          
+
           <div className="absolute bottom-4 right-4 p-2 bg-white/80 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
             <ZoomIn className="w-5 h-5 text-primary-900" />
           </div>
         </div>
 
-        {/* Thumbnails (Mocked using the same image for demo if no multiple images provided) */}
-        <div className="grid grid-cols-4 gap-4">
-           {[displayImage, ...images.slice(0, 3)].map((img, idx) => (
-             <button 
-               key={idx}
-               onClick={() => setDisplayImage(img)}
-               className={`relative aspect-[3/4] overflow-hidden ${displayImage === img ? 'ring-2 ring-primary-500' : 'opacity-70 hover:opacity-100'}`}
-             >
-               <img src={img} alt={`View ${idx}`} className="w-full h-full object-cover" />
-             </button>
-           ))}
+        <div className="grid grid-cols-4 gap-4 mt-4">
+          {allImages.map((img, idx) => (
+            <button
+              key={idx}
+              onClick={() => setDisplayImage(img)}
+              className={`relative aspect-[3/4] overflow-hidden ${displayImage === img ? 'ring-2 ring-primary-500' : 'opacity-70 hover:opacity-100'}`}
+            >
+              <img src={img} alt={`View ${idx}`} className="w-full h-full object-cover" />
+            </button>
+          ))}
         </div>
       </div>
 
@@ -79,21 +84,21 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({ mainImage, images, prod
       <AnimatePresence>
         {isLightboxOpen && (
           <div className="fixed inset-0 z-[200] flex">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="absolute inset-0 bg-white/90 backdrop-blur-xl"
             />
-            
-            <button 
+
+            <button
               onClick={() => setIsLightboxOpen(false)}
               className="absolute top-6 right-6 z-50 p-2 hover:bg-gray-100 rounded-full"
             >
               <X className="w-8 h-8 text-slate-800" />
             </button>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
@@ -107,22 +112,22 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({ mainImage, images, prod
               {/* Sidebar Info */}
               {details && (
                 <div className="w-full md:w-96 bg-white h-full p-12 border-l border-gray-100 overflow-y-auto">
-                   <h2 className="font-serif text-2xl text-primary-950 mb-8">{productName}</h2>
-                   
-                   <div className="space-y-8">
-                     <div>
-                       <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Fabric Composition</h3>
-                       <p className="text-slate-800 font-light">{details.fabric}</p>
-                     </div>
-                     <div>
-                       <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Model Stats</h3>
-                       <p className="text-slate-800 font-light">{details.modelStats}</p>
-                     </div>
-                     <div>
-                       <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Stylist Note</h3>
-                       <p className="text-slate-800 font-light italic">"{details.stylingTips}"</p>
-                     </div>
-                   </div>
+                  <h2 className="font-serif text-2xl text-primary-950 mb-8">{productName}</h2>
+
+                  <div className="space-y-8">
+                    <div>
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Fabric Composition</h3>
+                      <p className="text-slate-800 font-light">{details.fabric}</p>
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Model Stats</h3>
+                      <p className="text-slate-800 font-light">{details.modelStats}</p>
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Stylist Note</h3>
+                      <p className="text-slate-800 font-light italic">"{details.stylingTips}"</p>
+                    </div>
+                  </div>
                 </div>
               )}
             </motion.div>

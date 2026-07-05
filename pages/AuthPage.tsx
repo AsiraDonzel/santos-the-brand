@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { FloatingInput, AuthButton } from '../components/AuthUI';
 import { User } from '../types';
+import { useSignIn } from '@/hooks/accountHooks';
+import { setToken } from '@/endpoints/auth';
+import { log } from 'console';
 
 interface AuthPageProps {
   onLogin: (user: User) => void;
@@ -12,6 +15,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const login = useSignIn()
 
   // Form States
   const [formData, setFormData] = useState({
@@ -30,23 +34,28 @@ const AuthPage: React.FC<AuthPageProps> = ({ onLogin }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
+    console.log(formData)
     if (!validate()) return;
 
     setIsLoading(true);
 
-    // Mock API Call
-    setTimeout(() => {
-      setIsLoading(false);
-      const user: User = {
-        id: 'user_123',
-        name: isLogin ? 'Sophia Sterling' : formData.name,
-        email: formData.email
-      };
-      onLogin(user);
-      navigate('/'); // Redirect to Dashboard or Home
-    }, 1500);
+    try {
+      const response = await login.mutateAsync(formData)
+      if (response) {
+        onLogin(response)
+        navigate('/')
+      }
+      console.log("huii");
+      
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
+
+  
   };
 
   const handleInputChange = (field: string, value: string) => {
