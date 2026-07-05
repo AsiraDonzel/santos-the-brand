@@ -5,17 +5,14 @@ import { ArrowUpRight, Calendar, MapPin } from 'lucide-react';
 import { EVENT_ENTRIES } from '../constants';
 import { useEvents } from '@/hooks/storeHooks';
 import Loader from '@/components/Loader';
-import { error } from 'console';
-import Error404 from './Error404';
 
 const EventsPage = () => {
   const events = useEvents()
   const isLoading = events.isLoading
 
   if(isLoading) return <Loader />
-  if(events.isError) return <Error404 />
 
-  const eventData = events.data
+  const eventData: any[] = events.data ?? EVENT_ENTRIES;
 
   return (
     

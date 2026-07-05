@@ -10,9 +10,18 @@ import { useGallery } from '@/hooks/storeHooks';
 //   "https://images.unsplash.com/photo-1529139574466-a302c27e811f?q=80&w=1289&auto=format&fit=crop", // Detail
 // ];
 
+const FALLBACK_IMAGES = [
+  "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1412&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=1287&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1320&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1529139574466-a302c27e811f?q=80&w=1289&auto=format&fit=crop",
+];
+
 const GalleryPreview = () => {
-  const gallery = useGallery()
-  const images = gallery.data.images
+  const gallery = useGallery();
+  const apiImages = gallery.data?.images;
+  const getImg = (i: number) =>
+    apiImages?.[i]?.src ?? FALLBACK_IMAGES[i] ?? "";
 
   // console.log(images[0].src);
   
@@ -41,7 +50,7 @@ const GalleryPreview = () => {
              transition={{ duration: 0.8 }}
              className="relative lg:col-span-1 lg:row-span-2 group overflow-hidden"
           >
-            <img src={images[0].src} alt="Fashion" className="w-full h-full object-cover transition-transform duration-1000 ease-luxury group-hover:scale-110" />
+             <img src={getImg(0)} alt="Fashion" className="w-full h-full object-cover transition-transform duration-1000 ease-luxury group-hover:scale-110" />
             <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
           </motion.div>
 
@@ -54,7 +63,7 @@ const GalleryPreview = () => {
                transition={{ duration: 0.8, delay: 0.1 }}
                className="h-[288px] relative group overflow-hidden"
              >
-                <img src={images[1].src} alt="Shoes" className="w-full h-full object-cover transition-transform duration-1000 ease-luxury group-hover:scale-110" />
+                 <img src={getImg(1)} alt="Shoes" className="w-full h-full object-cover transition-transform duration-1000 ease-luxury group-hover:scale-110" />
              </motion.div>
              <motion.div 
                initial={{ opacity: 0, y: 20 }}
@@ -63,7 +72,7 @@ const GalleryPreview = () => {
                transition={{ duration: 0.8, delay: 0.2 }}
                className="flex-1 relative group overflow-hidden"
              >
-                <img src={images[3].src} alt="Detail" className="w-full h-full object-cover transition-transform duration-1000 ease-luxury group-hover:scale-110" />
+                 <img src={getImg(3)} alt="Detail" className="w-full h-full object-cover transition-transform duration-1000 ease-luxury group-hover:scale-110" />
              </motion.div>
           </div>
 
@@ -75,7 +84,7 @@ const GalleryPreview = () => {
              transition={{ duration: 0.8, delay: 0.3 }}
              className="relative lg:col-span-1 lg:row-span-2 group overflow-hidden md:hidden lg:block"
           >
-            <img src={images[2].src} alt="Portrait" className="w-full h-full object-cover transition-transform duration-1000 ease-luxury group-hover:scale-110" />
+            <img src={getImg(2)} alt="Portrait" className="w-full h-full object-cover transition-transform duration-1000 ease-luxury group-hover:scale-110" />
           </motion.div>
         </div>
 

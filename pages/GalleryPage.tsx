@@ -6,7 +6,6 @@ import PageTransition from '../components/PageTransition';
 import { SHOWCASE_ITEMS } from '../constants';
 import { useGallery, useShowcase } from '@/hooks/storeHooks';
 import Loader from '@/components/Loader';
-import Error404 from './Error404';
 
 
 const GalleryPage = () => {
@@ -19,10 +18,9 @@ const GalleryPage = () => {
   const isError = gallery.isError || showCase.isError
 
   if(isLoading) return <Loader />
-  if(isError) return <Error404 />
 
- const galleryProduct = gallery?.data?.images
- const showcaseProduct = showCase?.data
+  const galleryProduct: any[] = gallery?.data?.images ?? [];
+  const showcaseProduct: any[] = showCase?.data ?? SHOWCASE_ITEMS;
 
   return (
     

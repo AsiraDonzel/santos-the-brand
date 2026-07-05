@@ -17,6 +17,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
   isWishlisted = false,
   onToggleWishlist
 }) => {
+  // Support both API shape (images[]) and local constants shape (image string)
+  const mainImage: string =
+    (product as any).images?.[0] ??
+    (product as any).image ??
+    '';
 
   // console.log(product);
 
@@ -37,16 +42,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
         )}
 
         {/* Links & Images */}
-        <Link to={`/product/${product._id}`} className="block h-full w-full">
+        <Link to={`/product/${product._id || product.id}`} className="block h-full w-full">
           <img
-            src={product.images[0]}
+            src={mainImage}
             alt={product.name}
             className="h-full w-full object-cover object-center transition-opacity duration-700 ease-in-out group-hover:opacity-0"
             loading="lazy"
           />
           <img
-            src={product.hoverImage || product.images[0]}
-            alt={`${product.title} alternate view`}
+            src={(product as any).hoverImage || mainImage}
+            alt={`${product.name} alternate view`}
             className="absolute inset-0 h-full w-full object-cover object-center opacity-0 transition-opacity duration-700 ease-in-out group-hover:opacity-100"
             loading="lazy"
           />
@@ -88,10 +93,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       <div className="mt-6 flex flex-col items-center text-center">
         <p className="text-xs text-slate-400 uppercase tracking-widest mb-1">{product.category}</p>
-        <Link to={`/product/${product._id}`} className="group-hover:text-primary-600 transition-colors">
-          <h3 className="font-serif text-xl text-primary-950">{product.title}</h3>
+        <Link to={`/product/${product._id || product.id}`} className="group-hover:text-primary-600 transition-colors">
+          <h3 className="font-serif text-xl text-primary-950">{(product as any).title || product.name}</h3>
         </Link>
-        <p className="mt-2 text-sm font-medium text-slate-900">₦{product.basePrice.toLocaleString()}</p>
+        <p className="mt-2 text-sm font-medium text-slate-900">₦{((product as any).basePrice ?? (product as any).price ?? 0).toLocaleString()}</p>
       </div>
     </motion.div>
   );

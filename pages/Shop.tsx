@@ -5,7 +5,6 @@ import { Product, SortOption } from '../types';
 import { Filter, ChevronDown } from 'lucide-react';
 import { useProducts } from '@/hooks/storeHooks';
 import Loader from '@/components/Loader';
-import Error404 from './Error404';
 
 interface ShopProps {
   onAddToCart: (product: Product) => void;
@@ -20,19 +19,18 @@ const Shop: React.FC<ShopProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const products = useProducts()
 
+  const productList: Product[] = products.data ?? PRODUCTS;
+
   const maxAvailablePrice = useMemo(() => {
-    if (!products.data || products.data.length === 0) return 100000;
-    const max = Math.max(...products.data.map((p: any) => p.basePrice || p.price || 0));
+    if (!productList || productList.length === 0) return 100000;
+    const max = Math.max(...productList.map((p: any) => p.basePrice || p.price || 0));
     return max > 0 ? max : 100000;
-  }, [products.data]);
+  }, [productList]);
 
   const currentMaxPrice = selectedMaxPrice !== null ? selectedMaxPrice : maxAvailablePrice;
 
   const filteredProducts = useMemo(() => {
-
-    if (!products.data) return [];
-
-    let result = [...products.data];
+    let result = [...productList];
 
     if (selectedCategory !== "All") {
       result = result.filter((p) => p.category === selectedCategory);
@@ -50,7 +48,6 @@ const Shop: React.FC<ShopProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
         result.sort((a: any, b: any) => (b.basePrice || b.price || 0) - (a.basePrice || a.price || 0));
         break;
       case "newest":
-        // Mock sorting by new
         result.sort((a, b) => (a.isNew === b.isNew ? 0 : a.isNew ? -1 : 1));
         break;
       default:
@@ -58,10 +55,9 @@ const Shop: React.FC<ShopProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
     }
 
     return result;
-  }, [products.data, selectedCategory, sortBy, currentMaxPrice]);
+  }, [productList, selectedCategory, sortBy, currentMaxPrice]);
 
   if (products.isLoading) return <Loader />
-  if (products.isError) return <Error404 />
 
   // console.log(products.data);
 
@@ -150,10 +146,10 @@ const Shop: React.FC<ShopProps> = ({ onAddToCart, wishlistIds, onToggleWishlist 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
                 {filteredProducts.map(product => (
                   <ProductCard
-                    key={product._id}
+                    key={(product as any)._id || (product as any).id}
                     product={product}
                     onAddToCart={onAddToCart}
-                    isWishlisted={wishlistIds.includes(product._id)}
+                    isWishlisted={wishlistIds.includes((product as any)._id || (product as any).id)}
                     onToggleWishlist={onToggleWishlist}
                   />
                 ))}
